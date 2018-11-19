@@ -1,16 +1,31 @@
 {
   "name": "aloft",
-  "version": "0.0.0",
+  "version": "5.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "startdev": "NODE_ENV=dev REDIS_URL=redis://localhost:6379/ nodemon ./bin/www",
+    "test": "./node_modules/.bin/mocha --reporter spec tests/app.test.js --exit"
   },
   "dependencies": {
+    "cluster": "^0.7.7",
+    "connect-redis": "^3.4.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "os": "^0.1.1",
+    "sharedb": "^0.11.37",
+    "sharedb-mongo": "^1.0.0-beta.8",
+    "sharedb-redis-pubsub": "^1.0.0-beta.1",
+    "websocket-json-stream": "0.0.3",
+    "ws": "^6.1.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "supertest": "^3.3.0"
   }
 }
