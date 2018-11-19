@@ -59,7 +59,16 @@ function createServer() {
   // Start up ShareDB server and connect any
   // incoming WebSocket connection to ShareDB.
   const wsc = new WebSocket.Server({server: server});
+
   wsc.on('connection', function(ws, req) {
+
+    // Test message.
+    ws.on('message', data => {
+      if (data === 'ping') {
+       ws.emit('pong');
+      }
+    });
+
     const stream = new WebSocketJSONStream(ws);
     backend.listen(stream);
   });
