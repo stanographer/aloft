@@ -5,10 +5,11 @@ const app = require('../app');
 const cluster = require('cluster');
 const debug = require('debug')('aloft:server');
 const http = require('http');
+const mongoose = require('mongoose');
 const os = require('os');
 const redisPubSub = require('sharedb-redis-pubsub')('redis://localhost:6379');
 const ShareDB = require('sharedb');
-const ShareDBMongo = require('sharedb-mongo')('mongodb://localhost:27017/aloft');
+const ShareDBMongo = require('sharedb-mongo')('mongodb://localhost:27017/test');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('websocket-json-stream');
 
@@ -69,6 +70,14 @@ function createServer() {
       }
     });
 
+    ws.on('message', data => {
+      console.log(data);
+    });
+
+    ws.on('close', function() {
+      console.log('disconnected');
+    });
+
     const stream = new WebSocketJSONStream(ws);
     backend.listen(stream);
   });
@@ -88,6 +97,7 @@ function createServer() {
       // Port number.
       return port;
     }
+
     return false;
   }
 

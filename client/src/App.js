@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Link,
+  Switch
+} from 'react-router-dom';
+import LiveTranscriptView from './components/LiveTranscriptView';
 import './App.css';
 
+// import route Components here
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Router>
+          <div className="container">
+            <ul>
+              <li><Link to="/live">Live</Link></li>
+            </ul>
+            <hr />
+            <Route path="/live" component={ LiveTranscriptView } />
+          </div>
+        </Router>
       </div>
     );
   }

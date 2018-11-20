@@ -2,10 +2,20 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
+    "@material-ui/core": "^3.5.1",
+    "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-material-ui": "0.0.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.1",
+    "react-sharedb": "^7.0.0",
+    "reconnecting-websocket": "^4.1.10",
+    "sharedb": "^0.11.37",
+    "sharedb-string-binding": "^1.0.0",
+    "typeface-roboto": "0.0.54"
   },
   "scripts": {
     "start": "react-scripts start",
