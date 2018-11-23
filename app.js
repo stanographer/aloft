@@ -1,5 +1,6 @@
 // Module dependencies.
 
+const cors = require('cors');
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 const express = require('express');
@@ -8,12 +9,19 @@ const logger = require('morgan');
 const path = require('path');
 const usersRouter = require('./routes/users');
 
+// For testing on React dev environment.
+const corsOptions = {
+  origin: `http://localhost:3000`,
+  optionsSuccessStatus: 200
+};
+
 const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

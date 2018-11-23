@@ -7,7 +7,11 @@ import {
   Switch
 } from 'react-router-dom';
 import LiveTranscriptView from './components/LiveTranscriptView';
+import TranscriptEditor from './components/TranscriptEditor';
 import './App.css';
+import { bindActionCreators } from 'redux';
+import { exampleAction } from './actions/actions';
+import { connect } from 'react-redux';
 
 // import route Components here
 class App extends Component {
@@ -16,11 +20,14 @@ class App extends Component {
       <div className="App">
         <Router>
           <div className="container">
-            <ul>
-              <li><Link to="/live">Live</Link></li>
-            </ul>
-            <hr />
-            <Route path="/live" component={ LiveTranscriptView } />
+            <Route
+              path="/:user/:event"
+              name="Transcript Editor"
+              component={ LiveTranscriptView } />
+            <Route
+              path="/editor"
+              name="Transcript Editor"
+              component={ TranscriptEditor } />
           </div>
         </Router>
       </div>
@@ -28,4 +35,13 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  propOne: state.state.propOne,
+  propTwo: state.state.propTwo
+});
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ exampleAction }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -7,9 +7,10 @@ const debug = require('debug')('aloft:server');
 const http = require('http');
 const mongoose = require('mongoose');
 const os = require('os');
+const otText = require('ot-text');
 const redisPubSub = require('sharedb-redis-pubsub')('redis://localhost:6379');
 const ShareDB = require('sharedb');
-const ShareDBMongo = require('sharedb-mongo')('mongodb://localhost:27017/test');
+const ShareDBMongo = require('sharedb-mongo')('mongodb://localhost:27017/aloft');
 const WebSocket = require('ws');
 const WebSocketJSONStream = require('websocket-json-stream');
 
@@ -34,7 +35,6 @@ if (cluster.isMaster) {
       Signal: ${signal}`);
   });
 } else {
-
   // After forking, create and start the server.
   createServer();
 }
@@ -51,6 +51,7 @@ function createServer() {
 
   // Create a new ShareDB server.
   const backend = new ShareDB(shareDbOptions);
+  ShareDB.types.register(otText.type);
 
   // Listen on provided port, on all network interfaces.
   server.listen(port);

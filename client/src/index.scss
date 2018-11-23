@@ -1,35 +1,45 @@
+$header: #212529;
+
 .editor--toolbar-button {
   background-color: unset;
   border-color: unset;
-  color: #212529; }
+  color: $header;
+}
 
 .editor--toolbar-button_group {
-  margin: .5em .5em .5em .5em; }
+  margin: .5em .5em .5em .5em;
+}
 
 .editor--toolbar-group {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: 0 .5em 1em 0; }
+  margin: 0 .5em 1em 0;
+}
 
 .list-group-item {
-  border: none; }
+  border: none;
+}
 
 .mainEditor {
-  margin: 3em 3em 0 0; }
+  margin: 3em 3em 0 0;
+}
 
 .textArea {
   border: none;
   flex-grow: 1;
   padding: 2em 2em 2em 2em;
-  resize: none; }
+  resize: none;
+}
 
 textArea:focus {
-  outline: none; }
+  outline: none;
+}
 
 .textAreaContainer {
   align-items: stretch;
   display: flex;
   flex-direction: column;
   height: 80vh;
-  justify-content: center; }
+  justify-content: center;
+}
