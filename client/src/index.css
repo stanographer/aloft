@@ -1,3 +1,6 @@
+body, html {
+  background-color: #fff; }
+
 .editor--toolbar-button {
   background-color: unset;
   border-color: unset;

@@ -3,7 +3,6 @@ import ShareDB from 'sharedb/lib/client';
 import GenericBinding from 'sharedb-generic-binding';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import otText from 'ot-text';
-import { Link, Element , Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
 
 class LiveTranscript extends Component {
   constructor(props) {
@@ -45,34 +44,48 @@ class LiveTranscript extends Component {
       }
     });
 
+    // this.doc.on('load', () => {
+    //   this.setState({
+    //     doc: this.doc,
+    //     data: this.doc.data
+    //   }, this.createBinding);
+    // });
+
     this.doc.on('load', () => {
       this.setState({
         doc: this.doc,
         data: this.doc.data
-      }, this.createBinding);
+      });
     });
 
     this.doc.on('op', op => {
-      this.scrollToBottom();
+      console.log(op);
     });
   }
 
   createBinding() {
-    this.binding = new GenericBinding(this.liveTranscript.current, this.state.doc);
-    this.binding.setup();
+    // this.binding = new GenericBinding(this.liveTranscript.current, this.state.doc);
+    // this.binding = new GenericBinding(this.state.data, this.state.doc);
+    // this.binding.setup();
   }
 
   componentDidMount() {
     this.createSocket();
   }
 
+  componentDidUpdate() {
+    console.log("updated!");
+  }
+
   render() {
+
     return (
       <div className="liveTranscript--container">
-        <div
-        className="liveTranscript--text-format"
-        ref={ this.liveTranscript } />
-        <div ref={(el) => { this.messagesEnd = el; }}>hi</div>
+        {/*<div*/}
+          {/*className="liveTranscript--text-format"*/}
+          {/*ref={ this.liveTranscript } />*/}
+        <div className="liveTranscript--text-format">{this.state.data}</div>
+          <div className="end">hi</div>
       </div>
     );
   }

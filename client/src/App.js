@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <div className="App">
         <Router>
-          <div className="container">
+          <div>
             <Route
               path="/:user/:event"
               name="Transcript Editor"

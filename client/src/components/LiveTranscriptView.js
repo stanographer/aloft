@@ -1,8 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import queryString from 'query-string';
 import {
-  Col,
   Container,
   Row
 } from 'reactstrap';
@@ -10,9 +7,14 @@ import LiveTranscript from './LiveTranscript';
 import './LiveTranscriptView.css';
 
 class LiveTranscriptView extends React.Component {
-  state = {
-    open: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      backgroundColor: '#282f37'
+    };
+  }
+
 
   handleClose = () => {
     this.setState({
@@ -28,17 +30,20 @@ class LiveTranscriptView extends React.Component {
 
   render() {
     const { user, event } = this.props.match.params;
+    const liveTranscriptStyle = {
+      backgroundColor: this.state.backgroundColor
+    };
 
-    return (<div>
-        <Container>
-          <Row>
+    return (<Container fluid
+      style={liveTranscriptStyle}>
+        <Row>
             <LiveTranscript
+              onScrolled={() => console.log('the list was scrolled')}
               user={ user }
               event={ event }
             />
-          </Row>
-        </Container>
-      </div>
+        </Row>
+      </Container>
     );
   }
 }

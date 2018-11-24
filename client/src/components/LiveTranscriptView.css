@@ -5,6 +5,14 @@
   font-weight: normal;
   font-style: normal; }
 
+html, body {
+  background-color: #282f37; }
+
 .liveTranscript--text-format {
+  color: #FCF2CB;
+  font-family: 'Cousine', sans-serif;
+  font-size: 4em;
+  padding: 1em;
   text-align: left;
-  white-space: pre-wrap; }
+  white-space: pre-wrap;
+  word-break: break-word; }
