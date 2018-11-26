@@ -4,7 +4,7 @@ import connection from './sharedb/connection';
 import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
 import IntersectionVisible from 'react-intersection-visible';
 import { css } from 'react-emotion';
-import { PropagateLoader } from 'react-spinners';
+import { SyncLoader } from 'react-spinners';
 
 const override = css`
     display: block;
@@ -90,13 +90,13 @@ class LiveTranscript extends Component {
     return (
       <>
         <div className='sweet-loading'>
-          <PropagateLoader
-            className={override}
-            sizeUnit={"px"}
-            size={13}
-            margin={"6px"}
-            color={'#fff'}
-            loading={this.state.loading}
+          <SyncLoader
+            className={ override }
+            sizeUnit={ 'px' }
+            size={ 13 }
+            margin={ '6px' }
+            color={ '#fff' }
+            loading={ this.state.loading }
           />
         </div>
         <div

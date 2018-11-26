@@ -1,6 +1,5 @@
 body, html {
-  background-color: #fff;
-  overflow: scroll; }
+  background-color: #fff; }
 
 .editor--toolbar-button {
   background-color: unset;
