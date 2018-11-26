@@ -1,79 +1,110 @@
 import React, { Component } from 'react';
-import ShareDB from 'sharedb/lib/client';
 import GenericBinding from 'sharedb-generic-binding';
-import ReconnectingWebSocket from 'reconnecting-websocket';
-import otText from 'ot-text';
-import { Link, Element , Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
+import connection from './sharedb/connection';
+import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
+import IntersectionVisible from 'react-intersection-visible';
+import { css } from 'react-emotion';
+import { PropagateLoader } from 'react-spinners';
+
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 
 class LiveTranscript extends Component {
   constructor(props) {
     super(props);
 
-    this.liveTranscript = React.createRef();
-
     this.state = {
       doc: '',
       data: '',
-      errors: ''
+      errors: '',
+      loading: true,
+      path: []
     };
+
+    this.liveTranscript = React.createRef();
   }
 
-  createSocket() {
-    const socket = new ReconnectingWebSocket('ws://localhost:5000', null, {
-      automaticOpen: true,
-      reconnectInterval: 2000,
-      maxReconnectInterval: 3000,
-      timeoutInterval: 5000,
-      maxReconnectAttempts: null
-    });
-
-    this.subscribeToDoc(socket);
-  }
-
-  subscribeToDoc(socket) {
-    const connection = new ShareDB.Connection(socket);
-    ShareDB.types.register(otText.type);
-
-    this.doc = connection.get(this.props.user, this.props.event);
-
-    this.doc.subscribe(err => {
+  subscribe() {
+    const doc = connection.get(this.props.user, this.props.event);
+    doc.subscribe(err => {
       if (err) console.log(err);
-      if (this.doc.type === null) {
-        this.setState({
-          error: 'No document with this user/event combination exists!'
-        });
+      if (doc.type === null) {
+        this.setState({ error: 'No document with that user and event combination exists!' });
       }
     });
 
-    this.doc.on('load', () => {
+    doc.on('load', () => {
       this.setState({
-        doc: this.doc,
-        data: this.doc.data
-      }, this.createBinding);
+        doc,
+        data: doc.data,
+        scrolling: true
+      });
+      this.bind().then(() => {
+        this.setState({
+          loading: false
+        });
+      });
+      scroll.scrollToBottom();
     });
 
-    this.doc.on('op', op => {
-      this.scrollToBottom();
+    doc.on('del', () => {
+      doc.destroy();
+      doc.unsubscribe();
+      this.setState({ doc: null });
     });
   }
 
-  createBinding() {
-    this.binding = new GenericBinding(this.liveTranscript.current, this.state.doc);
+  async bind() {
+    this.binding = new GenericBinding(
+      this.liveTranscript.current,
+      this.state.doc,
+      this.state.path
+    );
     this.binding.setup();
   }
 
-  componentDidMount() {
-    this.createSocket();
+  // Scrolls the body of the transcript if there is a transition
+  // of visibility of the bottom of the page.
+  static onIntersect() {
+    scroll.scrollToBottom();
+  }
+
+  componentWillMount() {
+    this.subscribe();
+  }
+
+  componentWillUnmount() {
+    if (this.binding) {
+      this.binding.destroy();
+      this.setState({
+        doc: null,
+        path: null
+      });
+    }
   }
 
   render() {
     return (
-      <div className="liveTranscript--container">
+      <>
+        <div className='sweet-loading'>
+          <PropagateLoader
+            className={override}
+            sizeUnit={"px"}
+            size={13}
+            margin={"6px"}
+            color={'#fff'}
+            loading={this.state.loading}
+          />
+        </div>
         <div
-        className="liveTranscript--text-format"
-        ref={ this.liveTranscript } />
-        <div ref={(el) => { this.messagesEnd = el; }}>hi</div>
-      </div>
+          className="liveTranscript--text-format"
+          ref={ this.liveTranscript } />
+        <IntersectionVisible
+          onIntersect={ e => LiveTranscript.onIntersect(e) } />
+      </>
     );
   }
 }

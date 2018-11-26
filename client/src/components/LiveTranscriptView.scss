@@ -17,16 +17,26 @@ html, body {
 }
 
 .liveTranscript--container {
-  //height: 100vh;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .liveTranscript--text-format {
   color: $creme;
+  display: block;
   font-family: 'Cousine', sans-serif;
   font-size: 4em;
-  padding: 1em;
+  height: auto;
+  margin: 0;
+  overflow: auto;
+  padding: 1em 1em 0 1em;
   text-align: left;
   white-space: pre-wrap;
+  width: 100%;
   word-break: break-word;
+}
+
+.sweet-loading {
+  margin: 45vh 0 0 50vw;
 }
 

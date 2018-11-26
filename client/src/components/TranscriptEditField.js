@@ -21,7 +21,7 @@ class Editor extends Component {
   }
 
   createSocket() {
-    const socket = new ReconnectingWebSocket('ws://localhost:5000', null, {
+    const socket = new ReconnectingWebSocket('ws://localhost:9090', null, {
       automaticOpen: true,
       reconnectInterval: 3000,
       maxReconnectInterval: 3000,

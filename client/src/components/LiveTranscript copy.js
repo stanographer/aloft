@@ -3,6 +3,8 @@ import ShareDB from 'sharedb/lib/client';
 import GenericBinding from 'sharedb-generic-binding';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import otText from 'ot-text';
+import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
+import Waypoint from 'react-waypoint';
 
 class LiveTranscript extends Component {
   constructor(props) {
@@ -13,7 +15,8 @@ class LiveTranscript extends Component {
     this.state = {
       doc: '',
       data: '',
-      errors: ''
+      errors: '',
+      scrolling: true
     };
   }
 
@@ -44,29 +47,23 @@ class LiveTranscript extends Component {
       }
     });
 
-    // this.doc.on('load', () => {
-    //   this.setState({
-    //     doc: this.doc,
-    //     data: this.doc.data
-    //   }, this.createBinding);
-    // });
-
     this.doc.on('load', () => {
       this.setState({
         doc: this.doc,
-        data: this.doc.data
-      });
+        data: this.doc.data,
+        scrolling: true
+      }, this.createBinding);
+      scroll.scrollToBottom();
     });
 
     this.doc.on('op', op => {
-      console.log(op);
+      // this.scrollToBottom();
     });
   }
 
   createBinding() {
-    // this.binding = new GenericBinding(this.liveTranscript.current, this.state.doc);
-    // this.binding = new GenericBinding(this.state.data, this.state.doc);
-    // this.binding.setup();
+    this.binding = new GenericBinding(this.liveTranscript.current, this.state.doc);
+    this.binding.setup();
   }
 
   componentDidMount() {
@@ -74,19 +71,29 @@ class LiveTranscript extends Component {
   }
 
   componentDidUpdate() {
-    console.log("updated!");
+    console.log('component updated!');
   }
 
   render() {
-
     return (
-      <div className="liveTranscript--container">
-        {/*<div*/}
-          {/*className="liveTranscript--text-format"*/}
-          {/*ref={ this.liveTranscript } />*/}
-        <div className="liveTranscript--text-format">{this.state.data}</div>
-          <div className="end">hi</div>
-      </div>
+      <>
+        <div
+          className="liveTranscript--text-format"
+          ref={ this.liveTranscript } />
+        <Waypoint
+          onEnter={ () => {
+            scroll.scrollToBottom();
+            console.log('waypoint entered');
+          } }
+          onLeave={ () => {
+            scroll.scrollToBottom();
+            console.log('waypoint has been left');
+          } }
+          onPositionChange={ () => {
+            console.log('position has changed');
+          } }
+        />
+      </>
     );
   }
 }

@@ -10,11 +10,7 @@ class LiveTranscriptView extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      backgroundColor: '#282f37'
-    };
   }
-
 
   handleClose = () => {
     this.setState({
@@ -30,20 +26,12 @@ class LiveTranscriptView extends React.Component {
 
   render() {
     const { user, event } = this.props.match.params;
-    const liveTranscriptStyle = {
-      backgroundColor: this.state.backgroundColor
-    };
 
-    return (<Container fluid
-      style={liveTranscriptStyle}>
-        <Row>
-            <LiveTranscript
-              onScrolled={() => console.log('the list was scrolled')}
-              user={ user }
-              event={ event }
-            />
-        </Row>
-      </Container>
+    return (
+      <LiveTranscript
+        user={ user }
+        event={ event }
+      />
     );
   }
 }
