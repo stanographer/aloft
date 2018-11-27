@@ -21,7 +21,8 @@ html, body {
   overflow-y: auto; }
 
 .liveTranscript--container_observer {
-  height: 1em; }
+  height: 1em;
+  color: transparent; }
 
 .liveTranscript--buttons_floating {
   position: fixed;
@@ -46,10 +47,15 @@ liveTranscript--menu_blue-mountain {
   font-family: 'Roboto', sans-serif;
   font-size: 3em;
   min-height: 100vh;
-  line-height: 1.4em;
+  line-height: 1.5em;
   margin: 0;
   overflow: inherit;
-  padding: 1em 1em 0 1em;
+  padding: .5em 1.5em 0 1em;
   text-align: left;
   white-space: pre-wrap;
   word-break: break-word; }
+
+.sweet-loading {
+  position: absolute;
+  top: 50vh;
+  left: 45vw; }

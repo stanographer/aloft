@@ -1,13 +1,10 @@
 import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
+import LiveTranscriptOptions from './LiveTranscriptOptions';
 
 const LiveTranscriptFloatingButtons = (props) => (
   <div className="liveTranscript--buttons_floating">
-    <Button icon labelPosition='left'
-            size="huge" color="black">
-      <Icon name='cog' />
-      Settings
-    </Button>
+    <LiveTranscriptOptions style={props.style} />
     <Button icon labelPosition='left'
             size="huge"
             color="violet"

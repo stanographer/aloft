@@ -6,7 +6,6 @@ import IntersectionVisible from 'react-intersection-visible';
 import Observer from 'react-intersection-observer';
 import { css } from 'react-emotion';
 import { SyncLoader } from 'react-spinners';
-import LiveTranscriptMenu from './LiveTranscriptMenu';
 import LiveTranscriptFloatingButtons from './LiveTranscriptFloatingButtons';
 
 const override = css`
@@ -34,6 +33,7 @@ class LiveTranscript extends Component {
 
   subscribe() {
     const doc = connection.get(this.props.user, this.props.event);
+
     doc.subscribe(err => {
       if (err) console.log(err);
       if (doc.type === null) {
@@ -50,11 +50,7 @@ class LiveTranscript extends Component {
         this.setState({
           loading: false
         });
-        scroll.scrollToBottom({
-          delay: 0,
-          duration: 100,
-          isDynamic: true
-        });
+        this.scrollDown();
       });
     });
 
@@ -83,11 +79,13 @@ class LiveTranscript extends Component {
   }
 
   scrollDown() {
-    scroll.scrollToBottom({
-      delay: 0,
-      duration: 200,
-      isDynamic: true
-    });
+    setTimeout(() => {
+      scroll.scrollToBottom({
+        delay: 0,
+        duration: 200,
+        isDynamic: true
+      });
+    }, 0);
 
     this.setState({
       menuVisible: false
@@ -109,9 +107,13 @@ class LiveTranscript extends Component {
   }
 
   render() {
+    console.log(this.props.style);
+
     return (<div className="liveTranscript--container">
         { this.state.menuVisible && !this.state.loading
-          ? <LiveTranscriptFloatingButtons scrollDown={ this.scrollDown } />
+          ? <LiveTranscriptFloatingButtons
+            scrollDown={ this.scrollDown }
+            style={this.props.style}/>
           : null
         }
         <div className='sweet-loading'>
@@ -126,11 +128,12 @@ class LiveTranscript extends Component {
         </div>
         <div
           className="liveTranscript--text-format"
-          onClick={() => {
+          style={ this.props.style }
+          onClick={ () => {
             this.setState({
               menuVisible: true
-            })
-          }}
+            });
+          } }
           ref={ this.liveTranscript } />
         <Observer
           threshold={ .1 }
@@ -138,6 +141,7 @@ class LiveTranscript extends Component {
           { ({ inView, ref }) => (
             <div
               className="liveTranscript--container_observer"
+              style={this.props.style}
               ref={ ref } />
           ) }
         </Observer>
