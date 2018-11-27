@@ -5,26 +5,51 @@
   font-weight: normal;
   font-style: normal; }
 
+@keyframes toolbar {
+  0% {
+    transform: translateY(0); }
+  50% {
+    transform: translateY(0.35em); }
+  100% {
+    transform: translateY(0); } }
+
 html, body {
-  background-color: #282f37; }
+  height: 100%; }
 
 .liveTranscript--container {
   overflow-x: hidden;
-  overflow-y: visible; }
+  overflow-y: auto; }
+
+.liveTranscript--container_observer {
+  height: 1em; }
+
+.liveTranscript--buttons_floating {
+  position: fixed;
+  margin: 2em;
+  bottom: 5%;
+  right: 4em;
+  animation: toolbar 1.5s ease-in-out infinite;
+  z-index: 6; }
+
+.liveTranscript--menu {
+  position: fixed !important;
+  width: 100%;
+  bottom: 0;
+  left: 0; }
+
+liveTranscript--menu_blue-mountain {
+  height: 2em;
+  width: 2em; }
 
 .liveTranscript--text-format {
-  color: #FCF2CB;
   display: block;
-  font-family: 'Cousine', sans-serif;
-  font-size: 4em;
-  height: auto;
+  font-family: 'Roboto', sans-serif;
+  font-size: 3em;
+  min-height: 100vh;
+  line-height: 1.4em;
   margin: 0;
-  overflow: auto;
+  overflow: inherit;
   padding: 1em 1em 0 1em;
   text-align: left;
   white-space: pre-wrap;
-  width: 100%;
   word-break: break-word; }
-
-.sweet-loading {
-  margin: 45vh 0 0 0; }

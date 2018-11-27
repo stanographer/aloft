@@ -25,6 +25,13 @@ body, html {
   border: none;
 }
 
+.editor--navbar {
+  overflow: auto;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+}
+
 .mainEditor {
   margin: 3em 3em 0 0;
 }

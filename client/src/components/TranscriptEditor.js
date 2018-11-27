@@ -10,18 +10,8 @@ import {
   faShareSquare,
   faTextHeight
 } from '@fortawesome/free-solid-svg-icons';
-import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import TextEditor from '../components/TranscriptEditField';
-import {
-  Button,
-  ButtonGroup,
-  ButtonToolbar,
-  Col,
-  Container,
-  Dropdown, DropdownToggle, DropdownMenu, DropdownItem,
-  Row
-} from 'reactstrap';
 
 class TranscriptEditor extends React.Component {
   constructor(props) {
@@ -45,42 +35,14 @@ class TranscriptEditor extends React.Component {
     const { classes } = this.props;
     const { open } = this.state;
     // const { user, event } = this.props.match.params;
-    const {user, event} = queryString.parse(this.props.location.search);
+    const { user, event } = queryString.parse(this.props.location.search);
 
     return (<div>
-        <Container fluid className="mainEditor">
-          <Row>
-            <Col xs="12">
-              <ButtonToolbar className="editor--toolbar-group">
-                <ButtonGroup className="editor--toolbar-button_group">
-                  <Button size="lg" className="editor--toolbar-button"><FontAwesomeIcon icon={ faFont } /></Button>
-                  <Button size="lg" className="editor--toolbar-button"><FontAwesomeIcon
-                    icon={ faTextHeight } /></Button>
-                  <Button size="lg" className="editor--toolbar-button"><FontAwesomeIcon
-                    icon={ faAlignJustify } /></Button>
-                  <Button size="lg" className="editor--toolbar-button"><FontAwesomeIcon
-                    icon={ faPaintBrush } /></Button>
-                </ButtonGroup>
-                <ButtonGroup className="editor--toolbar-button_group">
-                  <Button size="lg" className="editor--toolbar-button"><FontAwesomeIcon icon={ faDownload } /></Button>
-                  <Button size="lg" className="editor--toolbar-button"><FontAwesomeIcon
-                    icon={ faPaperPlane } /></Button>
-                  <Button size="lg" className="editor--toolbar-button"><FontAwesomeIcon
-                    icon={ faExpandArrowsAlt } /></Button>
-                  <Button size="lg" className="editor--toolbar-button"><FontAwesomeIcon
-                    icon={ faShareSquare } /></Button>
-                </ButtonGroup>
-              </ButtonToolbar>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs="12">
-              <TextEditor
-                user={ user }
-                event={ event } />
-            </Col>
-          </Row>
-        </Container>
+        <div className="mainEditor">
+          <TextEditor
+            user={ user }
+            event={ event } />
+        </div>
       </div>
     );
   }

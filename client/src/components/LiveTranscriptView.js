@@ -1,8 +1,4 @@
 import React from 'react';
-import {
-  Container,
-  Row
-} from 'reactstrap';
 import LiveTranscript from './LiveTranscript';
 import './LiveTranscriptView.css';
 
@@ -28,10 +24,12 @@ class LiveTranscriptView extends React.Component {
     const { user, event } = this.props.match.params;
 
     return (
-      <LiveTranscript
-        user={ user }
-        event={ event }
-      />
+      <>
+        <LiveTranscript
+          user={ user }
+          event={ event }
+        />
+      </>
     );
   }
 }
