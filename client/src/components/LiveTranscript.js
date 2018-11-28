@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import GenericBinding from 'sharedb-generic-binding';
 import connection from './sharedb/connection';
-import { Link, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll';
 import IntersectionVisible from 'react-intersection-visible';
 import Observer from 'react-intersection-observer';
 import { css } from 'react-emotion';
@@ -37,7 +37,9 @@ class LiveTranscript extends Component {
     doc.subscribe(err => {
       if (err) console.log(err);
       if (doc.type === null) {
-        this.setState({ error: 'No document with that user and event combination exists!' });
+        this.setState({
+          error: 'No document with that user and event combination exists!'
+        });
       }
     });
 
@@ -79,6 +81,7 @@ class LiveTranscript extends Component {
   }
 
   scrollDown() {
+    console.log('scroll down called!');
     setTimeout(() => {
       scroll.scrollToBottom({
         delay: 0,
