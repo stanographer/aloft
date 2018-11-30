@@ -17,7 +17,7 @@
     "react-color": "^2.14.1",
     "react-dom": "^16.6.3",
     "react-emotion": "^9.2.12",
-    "react-intersection-observer": "^6.2.3",
+    "react-intersection-observer": "^6.3.1",
     "react-intersection-visible": "^2.0.6",
     "react-jsonschema-form": "^1.0.6",
     "react-material-ui": "0.0.1",
@@ -34,6 +34,7 @@
     "semantic-ui-react": "^0.83.0",
     "sharedb": "^0.11.37",
     "sharedb-generic-binding": "^0.1.0",
+    "sharedb-react-textbinding": "file:../../sharedb-react-textbinding",
     "sharedb-string-binding": "^1.0.0"
   },
   "scripts": {

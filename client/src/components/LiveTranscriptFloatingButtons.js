@@ -4,11 +4,11 @@ import LiveTranscriptOptions from './LiveTranscriptOptions';
 
 const LiveTranscriptFloatingButtons = (props) => (
   <div className="liveTranscript--buttons_floating">
-    <LiveTranscriptOptions style={props.style} />
+    <LiveTranscriptOptions style={ props.style } />
     <Button icon labelPosition='left'
             size="huge"
             color="violet"
-            onClick={props.scrollDown}>
+            onClick={ props.scrollDown }>
       Return
       <Icon name='down arrow' />
     </Button>

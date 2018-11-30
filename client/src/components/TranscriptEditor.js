@@ -11,7 +11,7 @@ import {
   faTextHeight
 } from '@fortawesome/free-solid-svg-icons';
 import queryString from 'query-string';
-import TextEditor from '../components/TranscriptEditField';
+import TranscriptEditField from '../components/TranscriptEditField';
 
 class TranscriptEditor extends React.Component {
   constructor(props) {
@@ -31,15 +31,12 @@ class TranscriptEditor extends React.Component {
   }
 
   render() {
-
-    const { classes } = this.props;
-    const { open } = this.state;
     // const { user, event } = this.props.match.params;
     const { user, event } = queryString.parse(this.props.location.search);
 
     return (<div>
         <div className="mainEditor">
-          <TextEditor
+          <TranscriptEditField
             user={ user }
             event={ event } />
         </div>

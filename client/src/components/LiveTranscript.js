@@ -69,6 +69,7 @@ class LiveTranscript extends Component {
       this.state.doc,
       this.state.path
     );
+    console.log(this.binding);
     this.binding.setup();
   }
 
@@ -144,7 +145,9 @@ class LiveTranscript extends Component {
           { ({ inView, ref }) => (
             <div
               className="liveTranscript--container_observer"
-              style={this.props.style}
+              style={{
+                backgroundColor: this.props.style.backgroundColor
+              }}
               ref={ ref } />
           ) }
         </Observer>

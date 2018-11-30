@@ -13,7 +13,10 @@ const socket = new ReconnectingWebSocket('ws://' + host + ':' + port, null, {
   timeoutInterval: 2000,
   maxReconnectAttempts: null
 });
+
 const connection = new ShareDB.Connection(socket);
+console.log(connection);
 ShareDB.types.register(otText.type);
+// ShareDB.types.map['json0'].registerSubtype(otText.type);
 
 export default connection;

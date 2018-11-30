@@ -14,7 +14,8 @@
     transform: translateY(0); } }
 
 html, body {
-  height: 100%; }
+  height: 100%;
+  font-family: 'Chivo', sans-serif; }
 
 .liveTranscript--container {
   overflow-x: hidden;
@@ -50,8 +51,9 @@ liveTranscript--menu_blue-mountain {
   line-height: 1.5em;
   margin: 0;
   overflow: inherit;
-  padding: .5em 1.5em 0 1em;
+  padding: .5em 1.5em .5em 1em;
   text-align: left;
+  text-shadow: 2px 2px #474a4f;
   white-space: pre-wrap;
   word-break: break-word; }
 
@@ -59,3 +61,19 @@ liveTranscript--menu_blue-mountain {
   position: absolute;
   top: 50vh;
   left: 45vw; }
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .liveTranscript--text-format {
+    display: block;
+    font-family: 'Roboto', sans-serif;
+    font-size: 3em;
+    min-height: 100vh;
+    line-height: 1.5em;
+    margin: 0;
+    overflow: inherit;
+    padding: 1.5em 1.5em .5em 1em;
+    text-align: left;
+    text-shadow: 2px 2px #474a4f;
+    white-space: pre-wrap;
+    word-break: break-word; } }

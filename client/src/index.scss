@@ -2,6 +2,8 @@ $header: #212529;
 
 body, html {
   background-color: #fff;
+  font-family: 'Chivo', sans-serif;
+  //overflow: hidden;
 }
 
 .editor--toolbar-button {
@@ -39,6 +41,9 @@ body, html {
 .textArea {
   border: none;
   flex-grow: 1;
+  font-family: 'Chivo', sans-serif;
+  font-size: 2em;
+  line-height: 1.5em;
   padding: 2em 2em 2em 2em;
   resize: none;
 }

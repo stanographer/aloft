@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import LiveTranscriptView from './components/LiveTranscriptView';
 import TranscriptEditor from './components/TranscriptEditor';
+import TranscriptEditorCopy from './components/TranscriptEditFieldCopy';
 import './App.css';
 import { bindActionCreators } from 'redux';
 import { exampleAction } from './actions/actions';
@@ -28,6 +29,10 @@ class App extends Component {
               path="/editor"
               name="Transcript Editor"
               component={ TranscriptEditor } />
+            <Route
+              path="/bedit"
+              name="Transcript Editor 2"
+              component={ TranscriptEditorCopy } />
           </div>
         </Router>
       </div>
