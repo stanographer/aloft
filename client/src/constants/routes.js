@@ -1,0 +1,10 @@
+export const ACCOUNT = '/account';
+export const ADMIN = '/admin';
+export const APP = '/app';
+export const DASHBOARD = '/dashboard';
+export const LANDING = '/';
+export const PASSWORD_FORGET = '/pw-forget';
+export const SIGN_IN = '/signin';
+export const SIGN_UP = '/signup';
+export const TRANSCRIPT_EDITOR = '/editor';
+export const TRANSCRIPT_VIEW = '/:user/:event';
