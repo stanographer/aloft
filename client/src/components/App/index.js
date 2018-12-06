@@ -9,6 +9,7 @@ import Navigation from '../Navigation';
 import LandingPage from '../Landing';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
+import PasswordChangePage from '../PasswordChange';
 import PasswordForgetPage from '../PasswordForget';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
@@ -27,6 +28,7 @@ const App = () =>
       <Route exact path={ ROUTES.LANDING } component={ LandingPage } />
       <Route path={ ROUTES.SIGN_UP } component={ SignUpPage } />
       <Route path={ ROUTES.SIGN_IN } component={ SignInPage } />
+      <Route path={ ROUTES.PASSWORD_CHANGE } component={ PasswordChangePage } />
       <Route path={ ROUTES.PASSWORD_FORGET } component={ PasswordForgetPage } />
     </div>
   </Router>;
