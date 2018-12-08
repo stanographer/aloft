@@ -2,18 +2,35 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Row,
+  UncontrolledAlert
+} from 'reactstrap';
+
 
 import { PasswordForgetLink } from '../PasswordForget';
 import { SignUpLink } from '../SignUp';
 import * as ROUTES from '../../constants/routes';
 
 const SignInPage = () => (
-  <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-    <PasswordForgetLink />
-    <SignUpLink />
-  </div>
+  <Container>
+    <Row>
+      <Col md="4" />
+      <Col md="4">
+        <SignInForm />
+        <PasswordForgetLink />
+        <SignUpLink />
+      </Col>
+      <Col md="4" />
+    </Row>
+  </Container>
 );
 
 const INITIAL_STATE = {
@@ -51,31 +68,51 @@ class SignInFormBase extends Component {
 
   render() {
     const { email, password, error } = this.state;
-
     const isInvalid = password === '' || email === '';
 
     return (
-      <form onSubmit={ this.onSubmit }>
-        <input
-          name="email"
-          value={ email }
-          onChange={ this.onChange }
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={ password }
-          onChange={ this.onChange }
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={ isInvalid } type="submit">
-          Sign In
-        </button>
-
-        { error && <p>{ error.message }</p> }
-      </form>
+      <div>
+        <h1>Aloft Sign-In</h1>
+        <Form onSubmit={ this.onSubmit }>
+          <FormGroup row>
+            <Label for="email" sm={ 4 } size="lg">Email</Label>
+            <Col sm={ 8 }>
+              <Input
+                value={ email }
+                onChange={ this.onChange }
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Email address"
+                bsSize="lg" />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label for="password" sm={ 4 } size="lg">Password</Label>
+            <Col sm={ 8 }>
+              <Input
+                value={ password }
+                onChange={ this.onChange }
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password"
+                bsSize="lg" />
+            </Col>
+          </FormGroup>
+          { error &&
+          <UncontrolledAlert color="danger">
+            { error.message }
+          </UncontrolledAlert> }
+          <Button
+            disabled={ isInvalid }
+            type="submit"
+            size="lg"
+            block>
+            Sign In
+          </Button>
+        </Form>
+      </div>
     );
   }
 }

@@ -239,6 +239,7 @@ class SignUpFormBase extends Component {
   };
 
   render() {
+
     const {
       fullName,
       fullNameValid,

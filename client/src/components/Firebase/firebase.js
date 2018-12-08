@@ -11,6 +11,14 @@ const config = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID
 };
 
+const actionCodeSettings = {
+  // URL you want to redirect back to. The domain (www.example.com) for this
+  // URL must be whitelisted in the Firebase Console.
+  url: 'https://www.example.com/finishSignUp?cartId=1234',
+  // This must be true.
+  handleCodeInApp: true,
+};
+
 class Firebase {
   constructor() {
     app.initializeApp(config);
@@ -24,8 +32,14 @@ class Firebase {
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
 
+  doCreateUserWithEmailLink = (email, actionCode) =>
+    this.auth.sendSignInLinkToEmail(email, actionCode);
+
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
+
+  doSignInWithEmailLink = email =>
+    this.auth.signInWithEmailLink(email);
 
   doSignOut =() => this.auth.signOut();
 

@@ -1,0 +1,91 @@
+$dark-blue-header: #282f37
+$creme: #FCF2CB
+
+@keyframes toolbar
+  0%
+    transform: translateY(0)
+
+  50%
+    transform: translateY(0.35em)
+
+  100%
+    transform: translateY(0)
+
+html, body
+  height: 100%
+
+
+.liveTranscript--container
+  overflow-x: hidden
+  overflow-y: auto
+
+
+.liveTranscript--container_observer
+  height: 1.2em
+  color: transparent
+
+
+.liveTranscript--buttons_floating
+  position: fixed
+  margin: 2em
+  bottom: 5%
+  right: 4em
+  animation: toolbar 1.5s ease-in-out infinite
+  z-index: 6
+
+
+.liveTranscript--menu
+  position: fixed !important
+  width: 100%
+  bottom: 0
+  left: 0
+
+
+.liveTranscript--menu_blue-mountain
+  height: 2em
+  width: 2em
+
+
+.liveTranscript--text-format
+  display: block
+  font-family: 'Roboto', sans-serif
+  font-size: 3em
+  min-height: 100vh
+  line-height: 1.5em
+  margin: 0
+  overflow: inherit
+  padding: .5em 1.5em .2em 1em
+  text-align: left
+  text-shadow: 2px 2px #474a4f
+  white-space: pre-wrap
+  word-break: break-word
+
+.slide-pane__header
+  background: unset !important
+  border-bottom: unset
+
+.sweet-loading
+  position: absolute
+  top: 50vh
+  left: 45vw
+
+
+/* iPads (portrait and landscape) ----------- */
+//@media only screen
+//and (min-device-width: 768px)
+//and (max-device-width: 1024px)
+//.liveTranscript--text-format
+//  display: block
+//  font-family: 'Roboto', sans-serif
+//  font-size: 3em
+//  min-height: 100vh
+//  line-height: 1.5em
+//  margin: 0
+//  overflow: inherit
+//  padding: 1.5em 1.5em 0 1em
+//  text-align: left
+//  text-shadow: 2px 2px #474a4f
+//  white-space: pre-wrap
+//  word-break: break-word
+
+

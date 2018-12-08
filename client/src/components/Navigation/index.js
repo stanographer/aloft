@@ -1,5 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {
+  Nav,
+  NavItem,
+  NavLink
+} from 'reactstrap';
 
 import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
@@ -15,25 +20,25 @@ const Navigation = () => (
 
 const NavigationAuthUser = () => (
   <div>
-    <div>
-      <ul>
-        <li>
-          <Link to={ ROUTES.LANDING }>Landing</Link>
-        </li>
-        <li>
-          <Link to={ ROUTES.DASHBOARD }>Dashboard</Link>
-        </li>
-        <li>
-          <Link to={ ROUTES.ACCOUNT }>Account</Link>
-        </li>
-        <li>
-          <Link to={ ROUTES.ADMIN }>Admin</Link>
-        </li>
-        <li>
-          <SignOutButton />
-        </li>
-      </ul>
-    </div>
+    <p>List Based</p>
+    <Nav>
+      <NavItem>
+        <Link to={ ROUTES.LANDING }>Landing</Link>
+      </NavItem>
+      <NavItem>
+        <Link to={ ROUTES.DASHBOARD }>Dashboard</Link>
+      </NavItem>
+      <NavItem>
+        <Link to={ ROUTES.ACCOUNT }>Account</Link>
+      </NavItem>
+      <NavItem>
+        <Link to={ ROUTES.ADMIN }>Admin</Link>
+      </NavItem>
+      <NavItem>
+        <SignOutButton />
+      </NavItem>
+    </Nav>
+    <hr />
   </div>
 );
 

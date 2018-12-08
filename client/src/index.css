@@ -1,14 +1,15 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@font-face {
+  font-family: 'Cousine';
+  src: url("./assets/fonts/Cousine/Cousine-Regular.eot");
+  src: url("./assets/fonts/Cousine/Cousine-Regular.eot?#iefix") format("embedded-opentype"), url("./assets/fonts/Cousine/Cousine-Regular.woff2") format("woff2"), url("./assets/fonts/Cousine/Cousine-Regular.woff") format("woff"), url("./assets/fonts/Cousine/Cousine-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
+html, body {
+  font-family: 'Chivo', sans-serif; }
+
+.header--h1-margins {
+  margin: 1em 0 1em 0; }
+
+.nav-item {
+  margin: 0 1em 0 1em; }
