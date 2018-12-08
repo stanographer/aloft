@@ -1,5 +1,8 @@
 import React from 'react';
 import { withAuthorization } from '../Session';
+import {
+  Container
+}
 
 const Dashboard = () => (
   <div>

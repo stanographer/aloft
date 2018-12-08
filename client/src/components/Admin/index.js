@@ -7,6 +7,7 @@ class AdminPage extends React.Component {
 
     this.state = {
       loading: false,
+      message: '',
       users: []
     };
   }
@@ -18,6 +19,14 @@ class AdminPage extends React.Component {
 
     this.props.firebase.users().on('value', snapshot => {
       const usersObject = snapshot.val();
+      if (!usersObject) {
+         this.setState({
+           loading: false,
+           message: 'There are currently no users in the database to load.'
+         });
+         return;
+      }
+
       const usersList = Object.keys(usersObject).map(key => ({
         ...usersObject[key],
         uid: key
@@ -35,12 +44,13 @@ class AdminPage extends React.Component {
   }
 
   render() {
-    const { users, loading } = this.state;
+    const { message, users, loading } = this.state;
 
     return (
       <div>
         <h1>Admin</h1>
         { loading && <div>Loading ...</div> }
+        { message && <div>There are no users to load.</div> }
         <UserList users={ users } />
       </div>
     );
