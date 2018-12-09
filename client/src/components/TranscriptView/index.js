@@ -1,4 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as localStorageActions from '../../actions/actions';
+import PropTypes from 'prop-types';
+
 import ShareDBBinding from 'sharedb-react-textbinding';
 import IntersectionObserver from 'react-intersection-observer';
 import IntersectionVisible from 'react-intersection-visible';
@@ -20,12 +25,9 @@ class LiveTranscriptView extends React.Component {
     super(props);
 
     this.state = {
-      backgroundColor: '#262A38',
-      fontSize: '3em',
-      fontFamily: 'Cousine, sans-serif',
       loading: true,
       menuVisible: false,
-      textColor: '#F2F2F2'
+      style: {}
     };
 
     this.scrollDown = this.scrollDown.bind(this);
@@ -38,10 +40,9 @@ class LiveTranscriptView extends React.Component {
     }
   }
 
+
   onLoaded() {
-    this.setState({
-      loading: false
-    });
+    this.readLocalStorage();
   }
 
   scrollDown() {
@@ -65,18 +66,19 @@ class LiveTranscriptView extends React.Component {
 
   render() {
     const { user, event } = this.props.match.params;
+    const { loading, menuVisible, style } = this.state;
     this.doc = connection.get(user, event);
 
-    const style = {
-      backgroundColor: this.props.backgroundColor || this.state.backgroundColor,
-      fontSize: this.props.fontSize || this.state.fontSize,
-      fontFamily: this.props.fontFamily || this.state.fontFamily,
-      color: this.props.textColor || this.state.textColor
-    };
+    // const style = {
+    //   backgroundColor: this.props.backgroundColor || this.state.backgroundColor,
+    //   fontSize: this.props.fontSize || this.state.fontSize,
+    //   fontFamily: this.props.fontFamily || this.state.fontFamily,
+    //   color: this.props.textColor || this.state.textColor
+    // };
 
     return (
       <div className="liveTranscript--container">
-        { this.state.menuVisible && !this.state.loading
+        { menuVisible && !loading
           ? <FloatingButtons
             scrollDown={ this.scrollDown }
             style={ style } />
@@ -89,7 +91,7 @@ class LiveTranscriptView extends React.Component {
             size={ 13 }
             margin={ '6px' }
             color={ style.color }
-            loading={ this.state.loading }
+            loading={ loading }
           />
         </div>
         <div className="liveTranscript"

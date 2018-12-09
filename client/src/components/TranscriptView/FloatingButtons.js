@@ -40,13 +40,21 @@ class FloatingButtons extends React.Component {
     });
   }
 
+  componentDidMount() {
+    console.log(this.props.style);
+  }
+
   render() {
+    const { styles } = this.props;
     library.add(faCog, faArrowDown, faInfo, faPaperPlane);
 
     return (
       <div className="liveTranscript--buttons_floating"
-      hidden={this.state.isPanelOpen}>
-        <SettingsPanel isPanelOpen={ this.state.isPanelOpen } panelClose={this.panelClose} />
+           hidden={ this.state.isPanelOpen }>
+        <SettingsPanel
+          isPanelOpen={ this.state.isPanelOpen }
+          panelClose={ this.panelClose }
+          styles={ styles } />
         <ButtonGroup size="lg">
           <Button color="primary" onClick={ this.props.scrollDown }>
             <FontAwesomeIcon icon="arrow-down" />&nbsp;&nbsp;Return to Bottom
