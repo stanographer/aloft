@@ -3,10 +3,10 @@ import {
   Button,
   ButtonGroup
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCog, faArrowDown, faInfo, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import SettingsPanel from './SettingsPanel';
 
 class FloatingButtons extends React.Component {
   constructor(props) {
@@ -18,20 +18,6 @@ class FloatingButtons extends React.Component {
     };
 
     this.toggle = this.toggle.bind(this);
-    this.panelToggle = this.panelToggle.bind(this);
-    this.panelClose = this.panelClose.bind(this);
-  }
-
-  panelClose() {
-    this.setState({
-      isPanelOpen: false
-    });
-  }
-
-  panelToggle() {
-    this.setState({
-      isPanelOpen: !this.state.isPanelOpen
-    });
   }
 
   toggle() {
@@ -45,23 +31,18 @@ class FloatingButtons extends React.Component {
   }
 
   render() {
-    const { styles } = this.props;
+    const { style } = this.props;
     library.add(faCog, faArrowDown, faInfo, faPaperPlane);
 
     return (
-      <div className="liveTranscript--buttons_floating"
-           hidden={ this.state.isPanelOpen }>
-        <SettingsPanel
-          isPanelOpen={ this.state.isPanelOpen }
-          panelClose={ this.panelClose }
-          styles={ styles } />
+      <div className="liveTranscript--buttons_floating">
         <ButtonGroup size="lg">
           <Button color="primary" onClick={ this.props.scrollDown }>
             <FontAwesomeIcon icon="arrow-down" />&nbsp;&nbsp;Return to Bottom
           </Button>
-          <Button color="primary" onClick={ this.panelToggle }>
-            <FontAwesomeIcon icon="cog" />
-          </Button>
+            <Button color="primary" tag={Link} to="/transcript-view-tools">
+              <FontAwesomeIcon icon="cog" />
+            </Button>
         </ButtonGroup>
       </div>
     );

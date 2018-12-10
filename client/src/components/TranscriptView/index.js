@@ -1,9 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import * as localStorageActions from '../../actions/actions';
-import PropTypes from 'prop-types';
-
 import ShareDBBinding from 'sharedb-react-textbinding';
 import IntersectionObserver from 'react-intersection-observer';
 import IntersectionVisible from 'react-intersection-visible';
@@ -20,7 +16,13 @@ const override = css`
     border-color: red;
 `;
 
-class LiveTranscriptView extends React.Component {
+const mapStateToProps = state => {
+  return {
+    style: state.aloft_localstorage.style
+  };
+};
+
+class ConnectedLiveTranscriptView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -40,9 +42,10 @@ class LiveTranscriptView extends React.Component {
     }
   }
 
-
   onLoaded() {
-    this.readLocalStorage();
+    this.setState({
+      loading: false
+    }, this.scrollDown);
   }
 
   scrollDown() {
@@ -66,15 +69,10 @@ class LiveTranscriptView extends React.Component {
 
   render() {
     const { user, event } = this.props.match.params;
-    const { loading, menuVisible, style } = this.state;
-    this.doc = connection.get(user, event);
+    const { loading, menuVisible, } = this.state;
+    const { style } = this.props;
 
-    // const style = {
-    //   backgroundColor: this.props.backgroundColor || this.state.backgroundColor,
-    //   fontSize: this.props.fontSize || this.state.fontSize,
-    //   fontFamily: this.props.fontFamily || this.state.fontFamily,
-    //   color: this.props.textColor || this.state.textColor
-    // };
+    this.doc = connection.get(user, event);
 
     return (
       <div className="liveTranscript--container">
@@ -122,4 +120,5 @@ class LiveTranscriptView extends React.Component {
   }
 }
 
+const LiveTranscriptView = connect(mapStateToProps, {})(ConnectedLiveTranscriptView);
 export default LiveTranscriptView;

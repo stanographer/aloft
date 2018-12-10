@@ -16,14 +16,13 @@ import AdminPage from '../Admin';
 import DashboardPage from '../Dashboard';
 import TranscriptEditor from '../TranscriptEditor';
 import TranscriptView from '../TranscriptView';
+import TranscriptViewTools from '../TranscriptViewTools';
 
 import * as ROUTES from '../../constants/routes';
 
 const App = () =>
   <Router>
     <div>
-      <Navigation />
-      <hr />
       <Route path={ ROUTES.ACCOUNT } component={ AccountPage } />
       <Route path={ ROUTES.ADMIN } component={ AdminPage } />
       <Route path={ ROUTES.DASHBOARD } component={ DashboardPage } />
@@ -32,6 +31,7 @@ const App = () =>
       <Route path={ ROUTES.SIGN_IN } component={ SignInPage } />
       <Route path={ ROUTES.PASSWORD_CHANGE } component={ PasswordChangePage } />
       <Route path={ ROUTES.PASSWORD_FORGET } component={ PasswordForgetPage } />
+      <Route path="/transcript-view-tools" component={ TranscriptViewTools } />
       <Route path="/editor" component={ TranscriptEditor } />
       <Route path="/:user/:event" component={ TranscriptView } />
     </div>

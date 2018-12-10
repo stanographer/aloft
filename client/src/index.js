@@ -6,10 +6,8 @@ import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import Firebase, { FirebaseContext } from './components/Firebase';
-import configureStore from './store/configureStore';
 import Provider from 'react-redux/es/components/Provider';
-
-const store = configureStore();
+import store from './store';
 
 ReactDOM.render(
   <FirebaseContext.Provider value={ new Firebase() }>
