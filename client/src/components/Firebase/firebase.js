@@ -41,7 +41,7 @@ class Firebase {
   doSignInWithEmailLink = email =>
     this.auth.signInWithEmailLink(email);
 
-  doSignOut =() => this.auth.signOut();
+  doSignOut = () => this.auth.signOut();
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
@@ -53,6 +53,14 @@ class Firebase {
   user = uid => this.db.ref(`users/${uid}`);
   users = () => this.db.ref('users');
 
+  getCurrentUserUid = () => this.auth.currentUser.uid;
+  getCurrentUser = () => this.auth.currentUser;
+
+  // Events API
+
+  eventByUid = uid => this.db.ref(`events/${uid}`);
+  eventsBySlug = slug => this.db.ref('events');
+  events = () => this.db.ref('events');
 }
 
 export default Firebase;

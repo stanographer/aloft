@@ -9,6 +9,9 @@
 html, body {
   height: 100%; }
 
+.dashboard-main {
+  margin: 3em 0 0 0; }
+
 .liveTranscript--container {
   overflow-x: hidden;
   overflow-y: auto; }
@@ -89,8 +92,11 @@ html, body {
   right: 0; }
 
 .settings-panel__close-button > svg {
+  display: block;
   float: right;
-  font-size: 2em; }
+  font-size: 2em;
+  height: 100%;
+  width: 100%; }
 
 .settings-panel__close-button:hover {
   background-color: #ededed;
@@ -101,7 +107,7 @@ html, body {
 
 .settings-panel__column-right--preview {
   overflow: scroll;
-  height: 15em; }
+  height: 17em; }
 
 .settings-panel__column-left--header-group {
   margin: 0 0 2.5em 0; }

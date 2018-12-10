@@ -1,41 +1,50 @@
 import React from 'react';
 import { withAuthorization } from '../Session';
+import { withFirebase } from '../Firebase';
 import {
-  Button,
-  Col,
-  Container,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
-  Label,
-  Row
+  Container
 } from 'reactstrap';
+import Navigation from '../Navigation';
+import { compose } from 'recompose';
+import { withRouter } from 'react-router-dom';
+import EventCreator from './EventCreator';
+import './index.css';
 
-const Dashboard = () => (
-  <Container>
-    <div className="header--h1-margins">
-      <h1>Dashboard</h1>
-    </div>
-    <Form>
-      <FormGroup row>
-        <Label for="Event Name" sm={ 2 }>Name</Label>
-        <Col sm={ 10 }>
-          <Input
-            bsSize="lg"
-            type="text"
-            name="event"
-            id="event" placeholder="Enter Event Name" />
-        </Col>
-      </FormGroup>
-      <FormGroup check row>
-        <Col sm={ { size: 10, offset: 2 } }>
-          <Button>Submit</Button>
-        </Col>
-      </FormGroup>
-    </Form>
-  </Container>
-);
+class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      user: {},
+      uid: ''
+    };
+  }
+
+  render() {
+    return (
+      <>
+        <Navigation user={this.state.user} />
+        <Container className="dashboard-main">
+          <EventCreator user={ this.state.user } uid={ this.state.uid } />
+        </Container>
+      </>
+    );
+  }
+
+  componentDidMount() {
+    const { firebase } = this.props;
+
+    firebase.user(firebase.auth.currentUser.uid).on('value', snapshot => {
+      const userSnapshot = snapshot.val();
+      console.log(snapshot.val());
+      this.setState({
+        user: userSnapshot,
+        uid: firebase.auth.currentUser.uid
+      });
+    });
+  }
+}
 
 const condition = authUser => !!authUser;
-export default withAuthorization(condition)(Dashboard);
+
+export default compose(withRouter, withFirebase, withAuthorization(condition))(Dashboard);

@@ -435,7 +435,7 @@ class SignUpFormBase extends Component {
             size="lg"
             block
             // disabled={ isInvalid }
-            type=" submit">
+            type="submit">
             Create new account
           </Button>
         </Form>
