@@ -32,6 +32,7 @@ class ConnectedLiveTranscriptView extends React.Component {
       style: {}
     };
 
+    this.docParams = this.props.match.params;
     this.scrollDown = this.scrollDown.bind(this);
     this.onLoaded = this.onLoaded.bind(this);
   }
@@ -62,17 +63,17 @@ class ConnectedLiveTranscriptView extends React.Component {
     });
   }
 
+  componentWillMount() {
+    this.doc = connection.get(this.docParams.user, this.docParams.event);
+  }
+
   componentWillUnmount() {
-    this.doc.unsubscribe();
     this.doc.destroy();
   }
 
   render() {
-    const { user, event } = this.props.match.params;
     const { loading, menuVisible, } = this.state;
     const { style } = this.props;
-
-    this.doc = connection.get(user, event);
 
     return (
       <div className="liveTranscript--container">

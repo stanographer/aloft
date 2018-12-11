@@ -89,45 +89,42 @@ class EventCreator extends React.Component {
 
     firebase.user(uid)
       .child('events')
-      .push({
-        slug
-      }, err => {
-        if (err) this.setState({ error });
-      })
-      .then(() => {
-        firebase.events()
-          .push({
-            slug: !!slug && slug.trim().toLowerCase(),
-            title: !!title && title.trim(),
-            username,
-            userFullName: `${ firstName } ${ lastName }`,
-            speakers: !!speakers && speakers.trim(),
-            timeStarted,
-            privacy,
-            conf,
-            viewCount,
-            completed
-          }, err => {
-            if (err) this.setState({ error });
-          })
-          .then(eventObj => {
-            firebase.user(uid)
-              .child('events')
-              .orderByChild('slug')
-              .equalTo(slug)
-              .once('value', snapshot => {
-                console.log(snapshot);
-              })
-              .update({
-                eventIdentifier: eventObj.key
-              })
-              .catch(err => this.setState({ error: err }));
+      .orderByChild('slug')
+      .equalTo(slug)
+      .once('value', snapshot => {
+        if (!snapshot.val()) {
+          firebase.user(uid)
+            .child('events')
+            .push({
+              slug
+            }, err => this.setState({error : err}))
+            .then(eventObj => {
+              firebase.eventByUid(eventObj.key)
+                .set({
+                  slug: !!slug && slug.trim().toLowerCase(),
+                  title: !!title && title.trim(),
+                  username,
+                  userFullName: `${ firstName } ${ lastName }`,
+                  speakers: !!speakers && speakers.trim(),
+                  timeStarted,
+                  privacy,
+                  conf,
+                  viewCount,
+                  completed
+                }, err => {
+                  if (err) this.setState({ error });
+                })
+            });
+        } else {
+          this.setState({
+            error: `There is already an event with the slug, "${slug}." Try using a different one.`
           });
-      });
+        }
+      }).catch(err => this.setState({error: err}));
   };
 
   componentWillUnmount() {
-    this.props.firebase.events().off();
+    this.props.firebase.user().off();
   }
 
   render() {

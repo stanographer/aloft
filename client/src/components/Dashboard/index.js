@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
   componentDidMount() {
     const { firebase } = this.props;
 
-    firebase.user(firebase.auth.currentUser.uid).on('value', snapshot => {
+    firebase.user(firebase.auth.currentUser.uid).once('value', snapshot => {
       const userSnapshot = snapshot.val();
       console.log(snapshot.val());
       this.setState({
