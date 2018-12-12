@@ -6,13 +6,13 @@ import withAuthorization from '../Session/withAuthorization';
 import Navigation from '../Navigation';
 import queryString from 'query-string';
 import connection from '../ShareDB/connection';
-import StringBinding from 'sharedb-string-binding';
 import {
   Container,
   Form
 } from 'reactstrap';
 import './index.css';
-import ShareDBBinding from 'sharedb-react-textbinding';
+import otText from 'ot-text';
+import { attachTextarea } from '../ShareDB/textarea';
 
 class ConnectedTranscriptEditor extends React.Component {
   constructor(props) {
@@ -23,15 +23,32 @@ class ConnectedTranscriptEditor extends React.Component {
     };
 
     this.query = queryString.parse(this.props.location.search);
+    this.sharedTextArea = React.createRef();
+    this.focusTextInput = this.focusTextInput.bind(this);
   }
 
   componentWillMount() {
-    this.doc = connection.get(this.query.user, this.query.event);
-
+    const ottype = otText.type;
+    console.log(ottype);
+    this.doc = connection.get(this.query.user, this.query.job);
+    this.doc.subscribe(error => {
+      if (error) console.log('Failed to subscribe.', error);
+      if (!this.doc.type) {
+        console.log('creating');
+        const defaultData = '';
+        const ottype = otText.type.name;
+        const source = true;
+        const callback = () => console.log(arguments);
+        this.doc.create(defaultData, ottype, source, callback);
+      }
+      const textarea = document.querySelector('textarea');
+      attachTextarea(textarea, this.doc);
+    });
   }
 
   componentDidMount() {
     const { firebase } = this.props;
+    this.focusTextInput();
 
     firebase.user(firebase.auth.currentUser.uid).once('value', snapshot => {
       const userSnapshot = snapshot.val();
@@ -50,6 +67,12 @@ class ConnectedTranscriptEditor extends React.Component {
     this.binding = null;
   }
 
+  focusTextInput() {
+    // Explicitly focus the text input using the raw DOM API
+    // Note: we're accessing "current" to get the DOM node
+    this.sharedTextArea.current.focus();
+  }
+
   render() {
     const style = {
       color: '#172b4d',
@@ -64,18 +87,25 @@ class ConnectedTranscriptEditor extends React.Component {
           <div className="vertical-padding-3em" />
           <h1 className="display-2">Editor</h1>
           <p
-            className="lead">{ `${ window.location.protocol }//${ window.location.host }/${ this.query.user }/${ this.query.event }` }</p>
+            className="lead">{ `${ window.location.protocol }//${ window.location.host }/${ this.query.user }/${ this.query.job }` }</p>
           <div className="vertical-padding-3em" />
           <Form>
-            <ShareDBBinding
-              cssClass="form-control form-control-alternative"
-              style={ style }
-              doc={ this.doc }
-              // onLoaded={ this.onLoaded }
-              flag='≈'
-              rows={10}
-              cols={2}
-              elementType="textarea" />
+            <textarea className="form-control form-control-alternative"
+                      ref={ this.sharedTextArea }
+                      style={ style }
+                      rows={ 10 }
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck="false" />
+            {/*<ShareDBBinding*/ }
+            {/*cssClass="form-control form-control-alternative"*/ }
+            {/*style={ style }*/ }
+            {/*doc={ this.doc }*/ }
+            {/*// onLoaded={ this.onLoaded }*/ }
+            {/*flag='≈'*/ }
+            {/*rows={10}*/ }
+            {/*cols={2}*/ }
+            {/*elementType="textarea" />*/ }
           </Form>
         </Container>
       </div>

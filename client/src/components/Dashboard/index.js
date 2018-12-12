@@ -7,7 +7,7 @@ import {
 import Navigation from '../Navigation';
 import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
-import EventCreator from './EventCreator';
+import EventCreator from './JobCreator';
 import './index.css';
 
 class Dashboard extends React.Component {

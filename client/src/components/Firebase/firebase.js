@@ -56,11 +56,15 @@ class Firebase {
   getCurrentUserUid = () => this.auth.currentUser.uid;
   getCurrentUser = () => this.auth.currentUser;
 
-  // Events API
+  // Jobs API
 
-  eventByUid = uid => this.db.ref(`events/${uid}`);
-  eventsBySlug = slug => this.db.ref('events');
-  events = () => this.db.ref('events');
+  jobByUid = uid => this.db.ref(`jobs/${uid}`);
+  jobsBySlug = slug => this.db.ref('jobs');
+  events = () => this.db.ref('jobs');
+  jobs = (uid, slug) => this.db.ref(`users/${uid}`)
+    .child('jobs')
+    .orderByChild('slug')
+    .equalTo(slug);
 }
 
 export default Firebase;

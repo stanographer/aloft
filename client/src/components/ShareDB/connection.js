@@ -1,4 +1,4 @@
-import ShareDB from 'sharedb/lib/client';
+import ShareDB from '@teamwork/sharedb/lib/client';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import otText from 'ot-text';
 
@@ -17,6 +17,5 @@ const socket = new ReconnectingWebSocket('ws://' + host + ':' + port, null, {
 const connection = new ShareDB.Connection(socket);
 console.log(connection);
 ShareDB.types.register(otText.type);
-// ShareDB.types.map['json0'].registerSubtype(otText.type);
 
 export default connection;

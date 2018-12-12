@@ -44,7 +44,6 @@ class NavigationAuthUser extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const { firstName, lastName } = this.props.user;
     return (
       <div>
@@ -54,7 +53,7 @@ class NavigationAuthUser extends React.Component {
           <Collapse isOpen={ this.state.isOpen } navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/components/">Components</NavLink>
+                <NavLink href="/dashboard/">Dashboard</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>

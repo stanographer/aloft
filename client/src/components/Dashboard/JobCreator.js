@@ -14,7 +14,7 @@ import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import withAuthorization from '../Session/withAuthorization';
 
-class EventCreator extends React.Component {
+class JobCreator extends React.Component {
   constructor(props) {
     super(props);
 
@@ -87,19 +87,16 @@ class EventCreator extends React.Component {
 
     const { firebase, uid } = this.props;
 
-    firebase.user(uid)
-      .child('events')
-      .orderByChild('slug')
-      .equalTo(slug)
+    firebase.jobs(uid, slug)
       .once('value', snapshot => {
         if (!snapshot.val()) {
           firebase.user(uid)
-            .child('events')
+            .child('jobs')
             .push({
               slug
-            }, err => this.setState({error : err}))
-            .then(eventObj => {
-              firebase.eventByUid(eventObj.key)
+            }, err => this.setState({ error: err }))
+            .then(jobObj => {
+              firebase.jobByUid(jobObj.key)
                 .set({
                   slug: !!slug && slug.trim().toLowerCase(),
                   title: !!title && title.trim(),
@@ -113,14 +110,14 @@ class EventCreator extends React.Component {
                   completed
                 }, err => {
                   if (err) this.setState({ error });
-                })
+                });
             });
         } else {
           this.setState({
-            error: `There is already an event with the slug, "${slug}." Try using a different one.`
+            error: `There is already an event with the slug, "${ slug }." Try using a different one.`
           });
         }
-      }).catch(err => this.setState({error: err}));
+      }).catch(err => this.setState({ error: err }));
   };
 
   componentWillUnmount() {
@@ -200,7 +197,7 @@ class EventCreator extends React.Component {
   }
 }
 
-EventCreator.propTypes = {};
+JobCreator.propTypes = {};
 
 const condition = authUser => !!authUser;
-export default compose(withRouter, withFirebase, withAuthorization(condition))(EventCreator);
+export default compose(withRouter, withFirebase, withAuthorization(condition))(JobCreator);
