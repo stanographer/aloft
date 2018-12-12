@@ -87,7 +87,7 @@ class JobCreator extends React.Component {
 
     const { firebase, uid } = this.props;
 
-    firebase.jobs(uid, slug)
+    firebase.jobsBySlug(uid, slug)
       .once('value', snapshot => {
         if (!snapshot.val()) {
           firebase.user(uid)

@@ -7,8 +7,9 @@ import {
 import Navigation from '../Navigation';
 import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
-import EventCreator from './JobCreator';
+import JobCreator from './JobCreator';
 import './index.css';
+import JobsList from './JobList';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -25,7 +26,8 @@ class Dashboard extends React.Component {
       <>
         <Navigation user={this.state.user} />
         <Container className="dashboard-main">
-          <EventCreator user={ this.state.user } uid={ this.state.uid } />
+          <JobCreator user={ this.state.user } uid={ this.state.uid } />
+          <JobsList/>
         </Container>
       </>
     );

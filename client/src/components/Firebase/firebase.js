@@ -59,12 +59,11 @@ class Firebase {
   // Jobs API
 
   jobByUid = uid => this.db.ref(`jobs/${uid}`);
-  jobsBySlug = slug => this.db.ref('jobs');
-  events = () => this.db.ref('jobs');
-  jobs = (uid, slug) => this.db.ref(`users/${uid}`)
+  jobsBySlug = (uid, slug) => this.db.ref(`users/${uid}`)
     .child('jobs')
     .orderByChild('slug')
     .equalTo(slug);
+  jobsList =() => this.db.ref(`jobs`)
 }
 
 export default Firebase;
