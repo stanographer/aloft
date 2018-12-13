@@ -33,7 +33,7 @@ const App = () =>
       <Route path={ ROUTES.PASSWORD_FORGET } component={ PasswordForgetPage } />
       <Route path="/transcript-view-tools" component={ TranscriptViewTools } />
       <Route path="/editor" component={ TranscriptEditor } />
-      <Route path="/:user/:event" component={ TranscriptView } />
+      <Route path="/:user/:job" component={ TranscriptView } />
     </div>
   </Router>;
 

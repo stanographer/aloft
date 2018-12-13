@@ -52,11 +52,11 @@ class ConnectedTranscriptEditor extends React.Component {
 
     firebase.user(firebase.auth.currentUser.uid).once('value', snapshot => {
       const userSnapshot = snapshot.val();
-      console.log(snapshot.val());
       this.setState({
         user: userSnapshot,
         uid: firebase.auth.currentUser.uid
       });
+      console.log('snapshottt', this.state.user);
     });
   }
 

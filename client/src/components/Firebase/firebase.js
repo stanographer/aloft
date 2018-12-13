@@ -16,7 +16,7 @@ const actionCodeSettings = {
   // URL must be whitelisted in the Firebase Console.
   url: 'https://www.example.com/finishSignUp?cartId=1234',
   // This must be true.
-  handleCodeInApp: true,
+  handleCodeInApp: true
 };
 
 class Firebase {
@@ -50,7 +50,7 @@ class Firebase {
 
   // User API
 
-  user = uid => this.db.ref(`users/${uid}`);
+  user = uid => this.db.ref(`users/${ uid }`);
   users = () => this.db.ref('users');
 
   getCurrentUserUid = () => this.auth.currentUser.uid;
@@ -58,12 +58,22 @@ class Firebase {
 
   // Jobs API
 
-  jobByUid = uid => this.db.ref(`jobs/${uid}`);
-  jobsBySlug = (uid, slug) => this.db.ref(`users/${uid}`)
-    .child('jobs')
+  jobByUid = uid => this.db.ref(`jobs/${ uid }`);
+
+  deleteJobByUid = uid => this.db.ref(`jobs`).child(`${ uid }`).remove();
+
+  jobsBySlug = (slug) => this.db.ref(`jobs`)
     .orderByChild('slug')
     .equalTo(slug);
-  jobsList =() => this.db.ref(`jobs`)
+
+  jobs = () => this.db.ref('jobs');
+
+  // Events API
+  events = () => this.db.ref('events');
+
+  eventsBySlug = slug => this.db.ref(`events`)
+    .orderByChild('slug')
+    .equalTo(slug);
 }
 
 export default Firebase;

@@ -23,7 +23,7 @@ class JobCreator extends React.Component {
       title: '',
       username: '',
       speakers: '',
-      timeStarted: new Date().toUTCString(),
+      timeCreated: new Date().toUTCString(),
       privacy: false,
       conf: '',
       viewCount: 0,
@@ -68,24 +68,24 @@ class JobCreator extends React.Component {
     event.preventDefault();
 
     const {
-      username,
-      firstName,
-      lastName
-    } = this.props.user;
-
-    const {
       slug,
       title,
       speakers,
-      timeStarted,
+      timeCreated,
       privacy,
-      conf,
       viewCount,
       completed,
       error
     } = this.state;
 
-    const { firebase, uid } = this.props;
+    const {
+      username,
+      firstName,
+      lastName,
+      uid
+    } = this.props.user;
+
+    const { firebase } = this.props;
 
     firebase.jobsBySlug(uid, slug)
       .once('value', snapshot => {
@@ -103,11 +103,11 @@ class JobCreator extends React.Component {
                   username,
                   userFullName: `${ firstName } ${ lastName }`,
                   speakers: !!speakers && speakers.trim(),
-                  timeStarted,
+                  timeCreated,
                   privacy,
-                  conf,
                   viewCount,
-                  completed
+                  completed,
+                  key: jobObj.key
                 }, err => {
                   if (err) this.setState({ error });
                 });
@@ -134,7 +134,7 @@ class JobCreator extends React.Component {
 
     return (
       <div>
-        <h1>Event creator</h1>
+        <h1>Job Creator</h1>
         <Form>
           <Row form>
             <Col md={ 6 }>
@@ -188,7 +188,7 @@ class JobCreator extends React.Component {
             type="submit"
             color="primary"
             disabled={ formInvalid }
-            onClick={ this.onSubmit }>
+            onClick={ e => this.onSubmit(e) }>
             Create event
           </Button>
         </Form>

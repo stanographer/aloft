@@ -17,7 +17,7 @@ class JobList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.firebase.jobsList().on('value', snapshot => {
+    this.props.firebase.jobs().on('value', snapshot => {
       const jobsObj = snapshot.val();
 
       if (!jobsObj) {
@@ -46,44 +46,53 @@ class JobList extends React.Component {
   }
 
   render() {
-    const { jobs } = this.state;
+    const { jobs, loading } = this.state;
     return (
       <div>
-        <Table borderless>
-          <thead>
-          <tr>
-            <th />
-            <th>URI slug</th>
-            <th>Title</th>
-            <th>Date</th>
-            <th>View count</th>
-            <th>Tools</th>
-          </tr>
-          </thead>
-          <tbody>
-          <ListOfJobs jobs={ jobs } />
-          </tbody>
-        </Table>
+        { !loading
+        ? <Table borderless>
+            <thead>
+            <tr>
+              <th />
+              <th>URI slug</th>
+              <th>Title</th>
+              <th>Time</th>
+              <th>View count</th>
+              <th>Tools</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ListOfJobs jobs={ jobs }
+                        hidden={ !jobs || jobs.length === 0 }
+                        firebase={this.props.firebase}/>
+            </tbody>
+          </Table>
+          : <p className="text-center">Loading...</p>
+        }
       </div>
     );
   }
 }
 
-const ListOfJobs = ({ jobs }) =>
+const ListOfJobs = ({ jobs, firebase }) =>
   <>
-    { jobs.map(job => (
+    { !!jobs && jobs.map(job => (
       <tr key={ job.uid }>
         <th scope="row">1</th>
-        <td>{job.slug}</td>
-        <td>{job.title}</td>
-        <td>{job.timeStarted}</td>
-        <td>{job.viewCount}</td>
+        <td>{ job.slug }</td>
+        <td>{ job.title }</td>
+        <td>{ job.timeCreated }</td>
+        <td>{ job.viewCount }</td>
         <td>
-          <a href={`${ window.location.protocol }//${ window.location.host }/editor?user=${ job.user }&job=${ job.slug }`}>
+          <a
+            href={ `${ window.location.protocol }//${ window.location.host }/editor?user=${ job.username }&job=${ job.slug }` }>
             Edit
           </a>
-          <a href={`${ window.location.protocol }//${ window.location.host }/${ job.username }/${ job.slug }`}
+          <br />
+          <a href={ `${ window.location.protocol }//${ window.location.host }/${ job.username }/${ job.slug }` }
              target="_blank">Open in new window</a>
+          <br />
+          <a href="#" onClick={() => firebase.deleteJobByUid(job.uid)}>Delete</a>
         </td>
       </tr>
     )) }
