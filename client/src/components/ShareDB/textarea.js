@@ -67,8 +67,35 @@ export const attachTextarea = function (elem, doc) {
   // called after the \r\n newlines are converted, and that check is quite
   // slow. So we also cache the string before conversion so we can do a quick
   // check incase the conversion isn't needed.
+
   let prevValue;
   let newSelection = [];
+
+    /*
+      ADD-IN
+      Enabling the tab key on the textarea.
+   */
+
+  elem.onkeydown = e => {
+    if (e.key === 'Tab') { // Tab was pressed
+
+      e.preventDefault();
+
+      // Get caret position/selection
+      let val = elem.value,
+        start = elem.selectionStart,
+        end = elem.selectionEnd;
+
+      // set textarea value to: text before caret + tab + text after caret
+      elem.value = val.substring(0, start) + '\t' + val.substring(end);
+
+      // put caret at right position again
+      elem.selectionStart = elem.selectionEnd = start + 1;
+
+      // prevent the focus lose
+      return false;
+    }
+  };
 
   // Replace the content of the text area with newText, and transform the
   // current cursor by the specified function.
@@ -128,7 +155,7 @@ export const attachTextarea = function (elem, doc) {
     } else if (typeof value === 'object' && value.d !== undefined) {
       fields.delNum = value.d;
     }
-  }
+  };
 
   doc.on('op', function (op, localContext) {
     if (localContext === true) {
@@ -149,9 +176,6 @@ export const attachTextarea = function (elem, doc) {
       onRemove(fields.pos, fields.delNum);
     }
   });
-
-
-
 
   // *** local -> remote changes
 
@@ -189,3 +213,26 @@ export const attachTextarea = function (elem, doc) {
 
   return doc;
 };
+
+// (() => {
+//   let el = document.getElementById('sharedTextArea');
+//   el.onkeydown = (e) => {
+//     if (e.keyCode === 9) { // tab was pressed
+//
+//       // Get caret position/selection
+//       let val = this.value,
+//         start = this.selectionStart,
+//         end = this.selectionEnd;
+//
+//       // set textarea value to: text before caret + tab + text after caret
+//       this.value = val.substring(0, start) + '\t' + val.substring(end);
+//
+//       // put caret at right position again
+//       this.selectionStart = this.selectionEnd = start + 1;
+//
+//       // prevent the focus lose
+//       return false;
+//     }
+//   };
+// })();
+

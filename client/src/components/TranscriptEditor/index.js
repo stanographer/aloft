@@ -19,7 +19,8 @@ class ConnectedTranscriptEditor extends React.Component {
     super(props);
     this.state = {
       user: '',
-      uid: ''
+      uid: '',
+      textArea: ''
     };
 
     this.query = queryString.parse(this.props.location.search);
@@ -31,8 +32,9 @@ class ConnectedTranscriptEditor extends React.Component {
     const ottype = otText.type;
     console.log(ottype);
     this.doc = connection.get(this.query.user, this.query.job);
+
     this.doc.subscribe(error => {
-      if (error) console.log('Failed to subscribe.', error);
+      if (error) this.setState({error: 'Could not subscribe to the document.'});
       if (!this.doc.type) {
         console.log('creating');
         const defaultData = '';
@@ -91,6 +93,7 @@ class ConnectedTranscriptEditor extends React.Component {
           <div className="vertical-padding-3em" />
           <Form>
             <textarea className="form-control form-control-alternative"
+                      id="sharedTextArea"
                       ref={ this.sharedTextArea }
                       style={ style }
                       rows={ 10 }

@@ -49,7 +49,8 @@ class Index extends React.Component {
   };
 
   render() {
-    return this.whatToRender();
+    return <Viewer user={ this.docParams.user } job={ this.docParams.job } />
+    // return this.whatToRender();
   }
 }
 
