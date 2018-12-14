@@ -66,7 +66,7 @@ export const attachTextarea = function (elem, doc) {
   // windows, where the content contains \r\n newlines. applyChange() is only
   // called after the \r\n newlines are converted, and that check is quite
   // slow. So we also cache the string before conversion so we can do a quick
-  // check incase the conversion isn't needed.
+  // check in case the conversion isn't needed.
 
   let prevValue;
   let newSelection = [];
@@ -77,8 +77,10 @@ export const attachTextarea = function (elem, doc) {
    */
 
   elem.onkeydown = e => {
-    if (e.key === 'Tab') { // Tab was pressed
+    // Tab was pressed
+    if (e.key === 'Tab') {
 
+      // Prevent normal behavior of switching element focus.
       e.preventDefault();
 
       // Get caret position/selection
@@ -86,19 +88,20 @@ export const attachTextarea = function (elem, doc) {
         start = elem.selectionStart,
         end = elem.selectionEnd;
 
-      // set textarea value to: text before caret + tab + text after caret
+      // Set textarea value to: text before caret + tab + text after caret
       elem.value = val.substring(0, start) + '\t' + val.substring(end);
 
-      // put caret at right position again
+      // Put caret at right position again
       elem.selectionStart = elem.selectionEnd = start + 1;
 
-      // prevent the focus lose
+      // Prevent the focus lose
       return false;
     }
   };
 
-  // Replace the content of the text area with newText, and transform the
-  // current cursor by the specified function.
+  /* Replace the content of the text area with newText, and transform the
+   current cursor by the specified function. */
+
   let replaceText = function (newText, transformCursor) {
     if (transformCursor) {
       newSelection = [transformCursor(elem.selectionStart), transformCursor(elem.selectionEnd)];
