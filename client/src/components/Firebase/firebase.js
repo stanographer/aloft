@@ -50,13 +50,15 @@ class Firebase {
 
   // User API
 
-  user = uid => this.db.ref(`users/${ uid }`);
+  user = uid => this.db.ref(`users/${uid}`);
 
   users = () => this.db.ref('users');
 
-  userJobList = uid => this.user(uid).child('jobs');
+  findUser = username => this.db.ref('users')
+    .orderByChild('username')
+    .equalTo(username);
 
-  currentUser = () => this.auth.currentUser;
+  userJobList = uid => this.user(uid).child('jobs');
 
   deleteJobFromUser = slug =>
     this.user(this.auth.currentUser.uid)
@@ -66,9 +68,9 @@ class Firebase {
 
   // Jobs API
 
-  jobByUid = uid => this.db.ref(`jobs/${ uid }`);
+  allJobs = () => this.db.ref('jobs').orderByKey();
 
-  jobs = () => this.db.ref('jobs');
+  jobById = id => this.db.ref(`/jobs/${id}`);
 
   jobsBySlug = slug =>
     this.db.ref('jobs')
@@ -77,12 +79,11 @@ class Firebase {
 
   deleteJobFromJobs = uid =>
     this.db.ref('jobs')
-      .child(`${ uid }`)
+      .child(`${uid}`)
       .remove();
 
   // Events API
   events = () => this.db.ref('events');
-  eventsBySlug = slug => this.db.ref(`events`).orderByChild('slug').equalTo(slug);
 }
 
 export default Firebase;

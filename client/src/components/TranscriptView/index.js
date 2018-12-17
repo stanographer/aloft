@@ -9,9 +9,10 @@ class Index extends React.Component {
     super(props);
 
     this.state = {
-      jobFound: null,
-      job: {}
-
+      job: {},
+      jobId: '',
+      loading: true,
+      user: ''
     };
 
     this.docParams = this.props.match.params;
@@ -20,37 +21,63 @@ class Index extends React.Component {
   componentWillMount() {
     const { firebase } = this.props;
 
+    firebase.findUser(this.docParams.user).on('value', snapshot => {
+      if (!snapshot.val()) return this.setState({loading: false});
 
-    firebase.jobsBySlug(this.docParams.job).on('value', snapshot => {
-      const job = snapshot.val();
+      const returnedUser = snapshot.val();
+      const user = Object.keys(returnedUser).map(key => ({
+        ...returnedUser[key]
+      }));
 
-      if (job) {
-        snapshot.forEach(obj => {
-          this.setState({
-            job: obj.val(),
-            jobFound: true
-          });
-        });
-        console.log(this.state.job);
-      }
+      if (!user[0].jobs[this.docParams.job]) return this.setState({loading: false});
+
+      this.setState({
+        user: user[0].username,
+        jobId: user[0].jobs[this.docParams.job].id
+      });
+
+      return this.findJob();
     });
   }
 
-  whatToRender = () => {
-    if (this.state.job && this.state.job.privacy === 'private' || false) {
-      return <Private title={ this.state.job.title } speakers={ this.state.job.speakers } />;
-    } else if (this.state.job && !this.state.job.hasStarted && this.state.job.privacy === 'public' || true) {
-      return <HasntStarted title={ this.state.job.title } speakers={ this.state.job.speakers } />;
-    } else if (this.state.job && this.state.job.privacy === 'public' || true) {
-      return <Viewer user={ this.docParams.user } job={ this.docParams.job } />;
-    } else {
-      return <p>This event and user combination was not found.</p>;
-    }
+  componentWillUnmount() {
+    const { firebase } = this.props;
+
+    firebase.findUser().off();
+    firebase.jobById().off();
+  }
+
+  findJob() {
+    const { firebase } = this.props;
+    const { jobId } = this.state;
+
+    firebase.jobById(jobId).once('value', snapshot => {
+      if (!snapshot.val()) return;
+      const returnedJob = snapshot.val();
+
+      this.setState({
+        job: returnedJob,
+        loading: false
+      });
+    });
   };
 
   render() {
-    return <Viewer user={ this.docParams.user } job={ this.docParams.job } />
-    // return this.whatToRender();
+    const { job, jobId, loading } = this.state;
+
+    return (
+      <>
+        { !loading
+          ?
+          job && jobId && job.privacy === true
+            ? <p>this is a private event.</p>
+            : job && jobId
+            ? <Viewer user={ this.docParams.user } job={ this.docParams.job } />
+            : <p>No event found with that user/job combination!</p>
+        : null
+        }
+      </>
+    );
   }
 }
 

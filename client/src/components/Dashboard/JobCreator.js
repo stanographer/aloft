@@ -90,7 +90,7 @@ class JobCreator extends React.Component {
       completed
     } = this.state;
 
-    firebase.jobs()
+    firebase.allJobs()
       .push({
         slug: !!slug && slug.trim().toLowerCase(),
         title: !!title && title.trim(),

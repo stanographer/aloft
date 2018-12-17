@@ -19,7 +19,7 @@ class JobList extends React.Component {
   componentDidMount() {
     const { firebase } = this.props;
 
-    firebase.jobs().on('value', snapshot => {
+    firebase.allJobs().on('value', snapshot => {
       const jobs = snapshot.val();
 
       if (!jobs) {
@@ -33,8 +33,7 @@ class JobList extends React.Component {
       const jobsList = Object.keys(jobs).map(key => ({
         ...jobs[key],
         uid: key
-      }));
-      console.log(jobsList);
+      })).reverse();
 
       this.setState({
         jobs: jobsList,
@@ -44,7 +43,16 @@ class JobList extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.jobs().off();
+    this.props.firebase.allJobs().off();
+  }
+
+  static deleteJobFromShareDB(user, job) {
+    const url = `${ window.location.protocol }//${ window.location.hostname }:9090`;
+    console.log(url);
+    return fetch(`${url}/api?user=${user}&job=${job}`, {
+      method: 'delete'
+    })
+      .then(response => response.json());
   }
 
   render() {
@@ -97,6 +105,7 @@ const ListOfJobs = ({ jobs, firebase }) =>
           <a href="#" onClick={() => {
             firebase.deleteJobFromJobs(job.uid);
             firebase.deleteJobFromUser(job.slug);
+            JobList.deleteJobFromShareDB(job.username, job.slug);
           }}>Delete</a>
         </td>
       </tr>

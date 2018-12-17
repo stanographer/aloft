@@ -2,10 +2,6 @@ import React from 'react';
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
 import {
-  Button,
-  Card,
-  CardText,
-  CardTitle,
   Col,
   Container,
   Nav,

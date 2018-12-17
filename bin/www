@@ -37,6 +37,7 @@ if (cluster.isMaster) {
 } else {
   // After forking, create and start the server.
   createServer();
+  console.log(`Forked process, ${process.pid} has begun.`);
 }
 
 // Function to create the server.
