@@ -8,6 +8,7 @@
     "test": "./node_modules/.bin/mocha --reporter spec tests/app.test.js --exit"
   },
   "dependencies": {
+    "@teamwork/sharedb": "^3.0.1",
     "cluster": "^0.7.7",
     "connect-redis": "^3.4.0",
     "cookie-parser": "~1.4.3",
@@ -21,7 +22,6 @@
     "npm": "^6.4.1",
     "os": "^0.1.1",
     "ot-text": "^1.0.1",
-    "sharedb": "^1.0.0-beta.3",
     "sharedb-mongo": "^1.0.0-beta.8",
     "sharedb-redis-pubsub": "^1.0.0-beta.1",
     "websocket-json-stream": "0.0.3",

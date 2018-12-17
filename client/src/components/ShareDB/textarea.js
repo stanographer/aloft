@@ -184,7 +184,7 @@ export const attachTextarea = function (elem, doc) {
 
   // This function generates operations from the changed content in the textarea.
   let genOp = function (event) {
-    // In a timeout so the browser has time to propogate the event's changes to the DOM.
+    // In a timeout so the browser has time to propagate the event's changes to the DOM.
     setTimeout(function () {
       if (elem.value !== prevValue) {
         prevValue = elem.value;
@@ -216,4 +216,3 @@ export const attachTextarea = function (elem, doc) {
 
   return doc;
 };
-

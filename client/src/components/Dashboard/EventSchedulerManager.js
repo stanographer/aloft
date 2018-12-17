@@ -8,6 +8,7 @@ import {
   Input,
   Label
 } from 'reactstrap';
+import {createJobObjs} from './parser';
 
 
 class EventSchedulerManager extends React.Component {
@@ -79,47 +80,27 @@ class EventSchedulerManager extends React.Component {
     } = this.props.user;
 
     e.preventDefault();
-    let rawText = this.state.eventsRawText;
-    if (!rawText) return this.setState({ error: 'Field must not be empty.' });
-    let linesArray = rawText.split(/\r?\n/);
-    let message = '';
+    const jobs = createJobObjs(this.state.eventsRawText, username, firstName, lastName);
+    console.log(jobs);
 
-    linesArray.forEach(line => {
-      if (line.split('::').length < 3) return this.setState({ error: 'Each entry per line must consist of at least three fields.' });
-
-      const splitComponents = line.split('::');
-
-      let job = {
-        slug: splitComponents[0],
-        title: splitComponents[1],
-        speakers: splitComponents[2],
-        privacy: splitComponents[3] && splitComponents[3] === 'private' ? splitComponents[3] : 'public',
-        username,
-        userFullName: `${ firstName } ${ lastName }`,
-        timeCreated: new Date().toUTCString(),
-        viewCount: 0,
-        completed: false,
-        hasStarted: false
-      };
-
-      firebase.jobsBySlug(job.slug)
-        .once('value', snapshot => {
-          if (!snapshot.val()) {
-            firebase.jobs()
-              .push(job, err => {
-                if (err) return this.setState({ error: err });
-              });
-            console.log(job.title + '\n')
-            message += job.title + '\n';
-          } else {
-            this.setState({
-              error: `There is already a job with the slug, "${ job.slug }." Try using a different one.`
-            });
-          }
-        }).catch(err => this.setState({ error: err }));
-      console.log(this.state.message);
-        this.setState({message: message})
-    });
+    //   firebase.jobsBySlug(job.slug)
+    //     .once('value', snapshot => {
+    //       if (!snapshot.val()) {
+    //         firebase.jobs()
+    //           .push(job, err => {
+    //             if (err) return this.setState({ error: err });
+    //           });
+    //         console.log(job.title + '\n')
+    //         message += job.title + '\n';
+    //       } else {
+    //         this.setState({
+    //           error: `There is already a job with the slug, "${ job.slug }." Try using a different one.`
+    //         });
+    //       }
+    //     }).catch(err => this.setState({ error: err }));
+    //   console.log(this.state.message);
+    //     this.setState({message: message})
+    // });
   }
 
   render() {
@@ -168,7 +149,7 @@ class EventSchedulerManager extends React.Component {
           className="form-control form-control-alternative event-scheduler--event-input"
           rows="10"
           cols="100"
-          placeholder="Add events in the format: SLUG::EVENT NAME::SPEAKERS::[private/public]." />
+          placeholder="Add events." />
           </FormGroup>
           <Button color="primary" onClick={ e => this.onRawEventsSubmit(e) }>Create scheduled events</Button>
         </Form>
@@ -194,7 +175,7 @@ class EventSchedulerManager extends React.Component {
           </FormGroup>
           <FormGroup check>
             <Label check>
-              <Input type="checkbox" />{ ' ' }
+              <Input type="checkbox" />
               Private
             </Label>
           </FormGroup>

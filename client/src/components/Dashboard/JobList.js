@@ -17,10 +17,12 @@ class JobList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.firebase.jobs().on('value', snapshot => {
-      const jobsObj = snapshot.val();
+    const { firebase } = this.props;
 
-      if (!jobsObj) {
+    firebase.jobs().on('value', snapshot => {
+      const jobs = snapshot.val();
+
+      if (!jobs) {
         this.setState({
           message: 'You currently have no jobs.',
           loading: false
@@ -28,8 +30,8 @@ class JobList extends React.Component {
         return;
       }
 
-      const jobsList = Object.keys(jobsObj).map(key => ({
-        ...jobsObj[key],
+      const jobsList = Object.keys(jobs).map(key => ({
+        ...jobs[key],
         uid: key
       }));
       console.log(jobsList);
@@ -42,7 +44,7 @@ class JobList extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.jobsList().off();
+    this.props.firebase.jobs().off();
   }
 
   render() {
@@ -92,7 +94,10 @@ const ListOfJobs = ({ jobs, firebase }) =>
           <a href={ `${ window.location.protocol }//${ window.location.host }/${ job.username }/${ job.slug }` }
              target="_blank">Open in new window</a>
           <br />
-          <a href="#" onClick={() => firebase.deleteJobByUid(job.uid)}>Delete</a>
+          <a href="#" onClick={() => {
+            firebase.deleteJobFromJobs(job.uid);
+            firebase.deleteJobFromUser(job.slug);
+          }}>Delete</a>
         </td>
       </tr>
     )) }

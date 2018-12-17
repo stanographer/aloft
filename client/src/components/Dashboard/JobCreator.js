@@ -29,7 +29,8 @@ class JobCreator extends React.Component {
       viewCount: 0,
       completed: false,
       error: '',
-      warningVisible: true
+      warningVisible: true,
+      message: ''
     };
 
     this.onWarningDismiss = this.onWarningDismiss.bind(this);
@@ -64,9 +65,21 @@ class JobCreator extends React.Component {
     });
   };
 
-  onSubmit = event => {
-    event.preventDefault();
+  // Start of Firebase functions.
 
+  addJob = (slug) => {
+    const { firebase } = this.props;
+
+    firebase.jobsBySlug(slug).once('value', snapshot => {
+      // Checks to see there are no existing jobs with that slug.
+      if (snapshot.val()) return this.setState({ error: 'There is already a job with that slug.' });
+      return this.addJobToJobs();
+    });
+  };
+
+  addJobToJobs = () => {
+    const { firebase } = this.props;
+    const { username, firstName, lastName } = this.props.user;
     const {
       slug,
       title,
@@ -74,50 +87,50 @@ class JobCreator extends React.Component {
       timeCreated,
       privacy,
       viewCount,
-      completed,
-      error
+      completed
     } = this.state;
 
-    const {
-      username,
-      firstName,
-      lastName,
-      uid
-    } = this.props.user;
+    firebase.jobs()
+      .push({
+        slug: !!slug && slug.trim().toLowerCase(),
+        title: !!title && title.trim(),
+        username,
+        userFullName: `${ firstName } ${ lastName }`,
+        speakers: !!speakers && speakers.trim(),
+        timeCreated,
+        privacy,
+        viewCount,
+        completed
+      }, err => {
+        if (err) return this.setState({ error: err });
+      }).then(job => {
+      return this.addJobToUser(slug, job);
+    });
+  };
 
+  addJobToUser = (slug, job) => {
     const { firebase } = this.props;
+    const { uid } = this.props.user;
 
-    firebase.jobsBySlug(uid, slug)
-      .once('value', snapshot => {
-        if (!snapshot.val()) {
-          firebase.user(uid)
-            .child('jobs')
-            .push({
-              slug
-            }, err => this.setState({ error: err }))
-            .then(jobObj => {
-              firebase.jobByUid(jobObj.key)
-                .set({
-                  slug: !!slug && slug.trim().toLowerCase(),
-                  title: !!title && title.trim(),
-                  username,
-                  userFullName: `${ firstName } ${ lastName }`,
-                  speakers: !!speakers && speakers.trim(),
-                  timeCreated,
-                  privacy,
-                  viewCount,
-                  completed,
-                  key: jobObj.key
-                }, err => {
-                  if (err) this.setState({ error });
-                });
-            });
-        } else {
-          this.setState({
-            error: `There is already an event with the slug, "${ slug }." Try using a different one.`
-          });
-        }
-      }).catch(err => this.setState({ error: err }));
+    firebase.user(uid)
+      .child('jobs')
+      .child(slug)
+      .set({
+        id: job.key
+      }, err => {
+        if (err) return this.setState({ error: err });
+      })
+      .then(() => {
+        return this.setState({ message: 'Job successfully created!' });
+      });
+  };
+
+  // End of Firebase functions.
+
+  onSubmit = event => {
+    event.preventDefault();
+    const { slug } = this.state;
+    this.addJob(slug);
   };
 
   componentWillUnmount() {
@@ -192,6 +205,7 @@ class JobCreator extends React.Component {
             Create event
           </Button>
         </Form>
+        { !!this.state.message && <p>{ this.state.message }</p> }
       </div>
     );
   }
