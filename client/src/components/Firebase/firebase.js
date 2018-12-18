@@ -68,7 +68,9 @@ class Firebase {
 
   // Jobs API
 
-  allJobs = () => this.db.ref('jobs').orderByKey();
+  allJobs = () => this.db.ref('jobs');
+
+  allJobsList = () => this.db.ref('jobs').orderByKey();
 
   jobById = id => this.db.ref(`/jobs/${id}`);
 

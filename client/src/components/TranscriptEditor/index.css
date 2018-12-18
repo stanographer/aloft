@@ -1,2 +1,11 @@
+body {
+  font-size: 1em; }
+
 .editor {
   font-size: 2em; }
+
+.sharedTextArea {
+  padding: 1em !important;
+  font-family: Chivo, sans-serif;
+  font-size: 2em !important;
+  min-height: 20em !important; }

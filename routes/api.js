@@ -14,23 +14,37 @@ const backend = new ShareDB(shareDbOptions);
 ShareDB.types.register(otText.type);
 const connection = backend.connect();
 
+const send200 = (res, message) => {
+  if (message == null) message = `Sorry. There's either nothing here yet or this document doesn't exist.\n`;
+
+  res.writeHead(200, {
+    'Content-Type': 'text/plain; charset=utf-8'
+  });
+
+  res.end(message);
+};
+
 // Raw text API allows retrieval of raw transcript text.
 router.get('/', (req, res) => {
   const doc = connection.get(req.query.user, req.query.job);
 
-  const send200 = (res, message) => {
-    if (message == null) message = `Sorry. There's either nothing here yet or this document doesn't exist.\n`;
-
-    res.writeHead(200, {
-      'Content-Type': 'text/plain; charset=utf-8'
-    });
-
-    res.end(message);
-  };
-
   doc.fetch(err => {
     if (err) res.status(500).send('Sorry, there was an error retrieving that document.');
     send200(res, doc.data);
+  });
+});
+
+router.get('/snippet', (req, res) => {
+  const doc = connection.get(req.query.user, req.query.job);
+
+  doc.fetch(err => {
+    if (err) return res.send('');
+    try {
+      const snippet = doc.data.substring(0, 200);
+      send200(res, snippet);
+    } catch {
+      res.send('');
+    }
   });
 });
 

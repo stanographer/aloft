@@ -1,7 +1,10 @@
 import React from 'react';
 import {
-  Alert,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
   Col,
   Form,
   FormGroup,
@@ -25,6 +28,7 @@ class JobCreator extends React.Component {
       speakers: '',
       timeCreated: new Date().toUTCString(),
       privacy: false,
+      privacyPassword: '',
       conf: '',
       viewCount: 0,
       completed: false,
@@ -47,7 +51,7 @@ class JobCreator extends React.Component {
     if (event.target.id === 'slug') {
       if (!slugCheck.test(event.target.value)) {
         this.setState({
-          error: 'Slug names may only be lowercase, contain numbers, dashes, and hyphens.'
+          error: 'Slug names may only consist of lower case letters, numbers, dashes, and hyphens.'
         });
       } else {
         this.setState({ error: '' });
@@ -86,6 +90,7 @@ class JobCreator extends React.Component {
       speakers,
       timeCreated,
       privacy,
+      privacyPassword,
       viewCount,
       completed
     } = this.state;
@@ -99,6 +104,7 @@ class JobCreator extends React.Component {
         speakers: !!speakers && speakers.trim(),
         timeCreated,
         privacy,
+        privacyPassword,
         viewCount,
         completed
       }, err => {
@@ -138,73 +144,120 @@ class JobCreator extends React.Component {
   }
 
   render() {
+    const { username } = this.props.user;
     const {
+      error,
       slug,
-      error
+      speakers,
+      privacyPassword,
+      title
     } = this.state;
 
     let formInvalid = (error !== '' || slug === '');
 
     return (
       <div>
-        <h1>Job Creator</h1>
-        <Form>
-          <Row form>
-            <Col md={ 6 }>
-              <FormGroup>
-                <Label for="slug">URI slug</Label>
-                <Input type="text"
-                       required
-                       name="slug"
-                       id="slug"
-                       placeholder="Type in a slug."
-                       value={ this.state.slug }
-                       onChange={ e => this.onChange(e) } />
-              </FormGroup>
-              <FormGroup>
-                <Label for="title">Title</Label>
-                <Input
-                  type="text"
-                  required
-                  name="title"
-                  id="title"
-                  placeholder="Type in a title."
-                  value={ this.state.title }
-                  onChange={ e => this.onChange(e) } />
-              </FormGroup>
-              <FormGroup>
-                <Label for="speakers">Speaker(s)</Label>
-                <Input
-                  type="text"
-                  required
-                  name="speakers"
-                  id="speakers"
-                  placeholder="Type in a speakers' names followed by a comma."
-                  value={ this.state.speakers }
-                  onChange={ e => this.onChange(e) } />
-              </FormGroup>
-            </Col>
-          </Row>
-          <FormGroup check>
-            <Input type="checkbox"
-                   name="privacy"
-                   id="privacy"
-                   defaultChecked={ this.state.privacy }
-                   onChange={ this.onTogglePrivacy } />
-            <Label for="exampleCheck" check>Private</Label>
-          </FormGroup>
-          { this.state.error &&
-          <Alert color="warning" isOpen={ this.state.warningVisible } toggle={ this.onWarningDismiss }>
-            { this.state.error }
-          </Alert> }
-          <Button
-            type="submit"
-            color="primary"
-            disabled={ formInvalid }
-            onClick={ e => this.onSubmit(e) }>
-            Create event
-          </Button>
-        </Form>
+        <Card>
+          <CardHeader>
+            <h4 className="title d-inline text-primary">CREATE NEW JOB</h4>
+            <hr />
+          </CardHeader>
+          <CardBody>
+            <Form autoComplete="off">
+              <Row form>
+                <Col md={ 12 }>
+                  <FormGroup>
+                    <Label for="slug">URI SLUG (required)</Label>
+                    <Input autoComplete="off"
+                           data-lpignore="true" // Disable LastPass's autofill thingy.
+                           type="text"
+                           bsSize="lg"
+                           required
+                           name="slug"
+                           id="slug"
+                           placeholder='e.g. srcconpower2018-power-people-of-color'
+                           value={ this.state.slug }
+                           onChange={ e => this.onChange(e) } />
+                    { slug && !error
+                      ? <p
+                        className="text-success">{ `${ window.location.protocol }//${ window.location.host }/${ username }/${ slug }` }</p>
+                      : '' }
+                    { error && <p className="text-warning">{ error }</p> }
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="title">TITLE</Label>
+                    <Input
+                      autoComplete="false"
+                      data-lpignore="true" // Disable LastPass's autofill thingy.
+                      type="text"
+                      bsSize="lg"
+                      required
+                      name="title"
+                      id="title"
+                      placeholder='e.g. Power to the People—of Color'
+                      value={ this.state.title }
+                      onChange={ e => this.onChange(e) } />
+                    { title && !error
+                      ? <p className="text-success">{ `"${ title }"` }</p>
+                      : '' }
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="speakers">SPEAKER(S)</Label>
+                    <Input
+                      autoComplete="false"
+                      data-lpignore="true" // Disable LastPass's autofill thingy.
+                      type="text"
+                      bsSize="lg"
+                      required
+                      name="speakers"
+                      id="speakers"
+                      placeholder='e.g. Emmanuel Martinez, Julia B. Chan'
+                      value={ this.state.speakers }
+                      onChange={ e => this.onChange(e) } />
+                    { speakers && !error
+                      ? <p className="text-success">{ `"${ speakers }"` }</p>
+                      : '' }
+                  </FormGroup>
+                  <FormGroup check>
+                    <Input defaultChecked={ this.state.privacy }
+                           onChange={ this.onTogglePrivacy }
+                           type="checkbox"
+                           name="privacy"
+                           id="privacy" />
+                    <span className="form-check-sign">
+                <span className="check" />
+                </span>
+                    <Label for="privacy" check>Private</Label>
+                  </FormGroup>
+                  <br />
+                  <FormGroup hidden={!this.state.privacy}>
+                    <Input
+                      autoComplete="false"
+                      data-lpignore="true" // Disable LastPass's autofill thingy.
+                      type="password"
+                      bsSize="lg"
+                      required
+                      name="privacyPassword"
+                      id="privacyPassword"
+                      value={ this.state.privacyPassword }
+                      onChange={ e => this.onChange(e) } />
+                    <br />
+                    <p className="text-success">Users will have to type in this password to access the transcription.</p>
+                  </FormGroup>
+                </Col>
+              </Row>
+            </Form>
+          </CardBody>
+          <CardFooter>
+            <Button
+              type="submit"
+              color="primary"
+              disabled={ formInvalid }
+              onClick={ e => this.onSubmit(e) }>
+              CREATE EVENT
+            </Button>
+          </CardFooter>
+        </Card>
         { !!this.state.message && <p>{ this.state.message }</p> }
       </div>
     );

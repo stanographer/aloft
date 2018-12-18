@@ -8,7 +8,8 @@ import queryString from 'query-string';
 import connection from '../ShareDB/connection';
 import {
   Container,
-  Form
+  Form,
+  Input
 } from 'reactstrap';
 import './index.css';
 import otText from 'ot-text';
@@ -58,14 +59,11 @@ class ConnectedTranscriptEditor extends React.Component {
         user: userSnapshot,
         uid: firebase.auth.currentUser.uid
       });
-      console.log('snapshottt', this.state.user);
     });
   }
 
   componentWillUnmount() {
-    this.doc.removeListener();
     this.doc.destroy();
-    this.binding.destroy();
     this.binding = null;
   }
 
@@ -92,14 +90,25 @@ class ConnectedTranscriptEditor extends React.Component {
             className="lead">{ `${ window.location.protocol }//${ window.location.host }/${ this.query.user }/${ this.query.job }` }</p>
           <div className="vertical-padding-3em" />
           <Form>
-            <textarea className="form-control form-control-alternative"
-                      id="sharedTextArea"
-                      ref={ this.sharedTextArea }
-                      style={ style }
-                      rows={ 10 }
-                      autoCorrect="off"
-                      autoCapitalize="off"
-                      spellCheck="false" />
+            <Input
+              cols="80"
+              rows={ 10 }
+              className="sharedTextArea"
+              ref={ this.sharedTextArea }
+              placeholder="Start writing here..."
+              rows="4"
+              type="textarea"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
+            />
+            {/*<textarea className="sharedTextArea"*/}
+                      {/*id="sharedTextArea"*/}
+                      {/*ref={ this.sharedTextArea }*/}
+                      {/*rows={ 10 }*/}
+                      {/*autoCorrect="off"*/}
+                      {/*autoCapitalize="off"*/}
+                      {/*spellCheck="false" />*/}
             {/*<ShareDBBinding*/ }
             {/*cssClass="form-control form-control-alternative"*/ }
             {/*style={ style }*/ }

@@ -4,12 +4,7 @@ import { withFirebase } from '../Firebase';
 import {
   Col,
   Container,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  TabContent,
-  TabPane
+  Row
 } from 'reactstrap';
 import Navigation from '../Navigation';
 import { compose } from 'recompose';
@@ -45,50 +40,18 @@ class Dashboard extends React.Component {
     return (
       <div>
         <Navigation user={ this.state.user } />
-        <div className="vertical-padding-5em"/>
-        <Nav tabs>
-          <NavItem>
-            <NavLink
-              className={ classnames({ active: this.state.activeTab === '1' }) }
-              onClick={ () => {
-                this.toggleTab('1');
-              } }>
-              Jobs
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={ classnames({ active: this.state.activeTab === '2' }) }
-              onClick={ () => {
-                this.toggleTab('2');
-              } }>
-              Event Manager
-            </NavLink>
-          </NavItem>
-        </Nav>
-        <TabContent activeTab={ this.state.activeTab }>
-          <TabPane tabId="1">
-            <Row>
-              <Col sm="12">
-                <Container className="dashboard-main">
-                  <JobCreator user={ this.state.user } />
-                  <JobList />
-                </Container>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="2">
-            <Container>
-            <Row>
-              <Col sm="12">
-                <EventSchedulerManager user={ this.state.user } />
-              </Col>
-            </Row>
-            </Container>
-          </TabPane>
-        </TabContent>
+        <Container className="wrapper">
+          <div className="vertical-padding-5em" />
+          <Row>
+            <Col lg="6" md="12">
+              <JobCreator user={ this.state.user } />
+            </Col>
+            <Col lg="6" md="12">
+              <JobList />
+            </Col>
+          </Row>
+        </Container>
       </div>
-
     );
   }
 
@@ -102,7 +65,7 @@ class Dashboard extends React.Component {
         user: {
           ...userSnapshot,
           uid: firebase.auth.currentUser.uid
-        },
+        }
       });
     });
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'assets/css/black-dashboard-react.css';
+import 'assets/scss/black-dashboard-react.scss';
 import 'assets/css/nucleo-icons.css';
 import './index.css';
 import App from './components/App';
